@@ -350,6 +350,12 @@ footer{margin-top:40px;text-align:center;font-size:12px;color:var(--mut)}
   amountEl.addEventListener('input', function () { fmtInput(); pick(digits(amountEl.value)); hint(); });
   amountEl.value = '10.000';
 
+  // Auto pesan dari tautan, mis. /donasi/?pesan=Dukungan%20untuk%20Clincoo
+  try {
+    var qp = new URLSearchParams(location.search).get('pesan');
+    if (qp) $('msg').value = qp.trim().slice(0, 200);
+  } catch (e) {}
+
   function showErr(m) { var e = $('err'); e.textContent = m; e.hidden = !m; }
   function stop() { clearInterval(poll); clearInterval(tick); poll = tick = null; }
 
