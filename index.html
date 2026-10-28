@@ -295,6 +295,15 @@ h1 {
 .gallery { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
 .shot { aspect-ratio: 16 / 9; margin: 0; border-radius: 16px; overflow: hidden; background: var(--card); border: 1px solid var(--line); }
 .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.shot { position: relative; display: block; color: #fff; text-decoration: none; }
+.shot img { transition: transform 0.5s ease; }
+.shot::after { content: ""; position: absolute; inset: auto 0 0 0; height: 55%; background: linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0)); pointer-events: none; }
+.shot-name { position: absolute; z-index: 1; left: 16px; bottom: 16px; right: 130px; font-size: 15px; font-weight: 600; letter-spacing: -0.005em; text-shadow: 0 1px 6px rgba(0,0,0,0.5); }
+.shot-cta { position: absolute; z-index: 1; right: 12px; bottom: 12px; display: inline-flex; align-items: center; gap: 4px; padding: 8px 12px 8px 14px; border-radius: 9999px; background: #ffffff; color: #111; font-size: 13px; font-weight: 600; box-shadow: 0 4px 14px rgba(0,0,0,0.25); transition: transform 0.2s ease; }
+.shot-cta svg { width: 14px; height: 14px; }
+@media (hover: hover) { .shot:hover img { transform: scale(1.03); } .shot:hover .shot-cta { transform: translate(2px, -2px); } }
+.shot:active .shot-cta { transform: scale(0.95); }
 footer {
   margin-top: 40px;
   text-align: center;
@@ -304,7 +313,7 @@ footer {
 
 @media (prefers-reduced-motion: reduce) {
   main { animation: none; }
-  .ib, .pill, .pill .logo { transition: none; }
+  .ib, .pill, .pill .logo, .shot img, .shot-cta { transition: none; }
 }
 </style>
 </head>
@@ -378,15 +387,56 @@ footer {
   <section id="panel-karya" role="tabpanel" aria-labelledby="tab-karya" hidden>
     <div class="gallery">
       <!-- Ganti tiap .shot dengan: <figure class="shot"><img src="foto.webp" alt="Deskripsi" loading="lazy"></figure> -->
-      <figure class="shot"><img src="/img/undangan-pernikahan.webp?v=2" alt="Website undangan pernikahan Rafael &amp; Aurelia" width="1280" height="720" loading="lazy"></figure>
-      <figure class="shot"><img src="/img/topup-game.webp?v=2" alt="Website top up game Vylonium" width="1280" height="720" loading="lazy"></figure>
-      <figure class="shot"><img src="/img/tasks-dashboard.webp?v=2" alt="Dashboard aplikasi tugas Vylonium Tasks" width="1280" height="720" loading="lazy"></figure>
-      <figure class="shot"><img src="/img/saas-landing.webp?v=2" alt="Landing page SaaS Vylonium" width="1280" height="720" loading="lazy"></figure>
-      <figure class="shot"><img src="/img/properti.webp?v=2" alt="Website agen properti Vylonium Properti" width="1280" height="720" loading="lazy"></figure>
-      <figure class="shot"><img src="/img/portfolio.webp?v=2" alt="Website portofolio developer Vylonium" width="1280" height="720" loading="lazy"></figure>
-      <figure class="shot"><img src="/img/modellab-dashboard.webp?v=2" alt="Dashboard ModelLab AI Test Bench" width="1280" height="720" loading="lazy"></figure>
-      <figure class="shot"><img src="/img/kedai-kopi.webp?v=2" alt="Website kedai kopi Vylonium" width="1280" height="720" loading="lazy"></figure>
-      <figure class="shot"><img src="/img/kawata-console.webp?v=2" alt="Konsol gateway Kawata" width="1280" height="720" loading="lazy"></figure>
+      <a class="shot" href="https://undangan.clincoo.biz.id/" target="_blank" rel="noopener" aria-label="Kunjungi Undangan Pernikahan">
+        <img src="/img/undangan-pernikahan.webp?v=2" alt="Website undangan pernikahan Rafael &amp; Aurelia" width="1280" height="720" loading="lazy">
+        <span class="shot-name">Undangan Pernikahan</span>
+        <span class="shot-cta">Kunjungi <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a class="shot" href="https://topup.clincoo.biz.id/" target="_blank" rel="noopener" aria-label="Kunjungi Top Up Game">
+        <img src="/img/topup-game.webp?v=2" alt="Website top up game Vylonium" width="1280" height="720" loading="lazy">
+        <span class="shot-name">Top Up Game</span>
+        <span class="shot-cta">Kunjungi <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a class="shot" href="https://task.clincoo.biz.id/" target="_blank" rel="noopener" aria-label="Kunjungi Vylonium Tasks">
+        <img src="/img/tasks-dashboard.webp?v=2" alt="Dashboard aplikasi tugas Vylonium Tasks" width="1280" height="720" loading="lazy">
+        <span class="shot-name">Vylonium Tasks</span>
+        <span class="shot-cta">Kunjungi <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a class="shot" href="https://saas.clincoo.biz.id/" target="_blank" rel="noopener" aria-label="Kunjungi Landing SaaS">
+        <img src="/img/saas-landing.webp?v=2" alt="Landing page SaaS Vylonium" width="1280" height="720" loading="lazy">
+        <span class="shot-name">Landing SaaS</span>
+        <span class="shot-cta">Kunjungi <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a class="shot" href="https://properti.clincoo.biz.id/" target="_blank" rel="noopener" aria-label="Kunjungi Vylonium Properti">
+        <img src="/img/properti.webp?v=2" alt="Website agen properti Vylonium Properti" width="1280" height="720" loading="lazy">
+        <span class="shot-name">Vylonium Properti</span>
+        <span class="shot-cta">Kunjungi <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a class="shot" href="https://portfolio.clincoo.biz.id/" target="_blank" rel="noopener" aria-label="Kunjungi Portofolio">
+        <img src="/img/portfolio.webp?v=2" alt="Website portofolio developer Vylonium" width="1280" height="720" loading="lazy">
+        <span class="shot-name">Portofolio</span>
+        <span class="shot-cta">Kunjungi <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a class="shot" href="https://model-lab.clincoo.biz.id/" target="_blank" rel="noopener" aria-label="Kunjungi ModelLab">
+        <img src="/img/modellab-dashboard.webp?v=2" alt="Dashboard ModelLab AI Test Bench" width="1280" height="720" loading="lazy">
+        <span class="shot-name">ModelLab</span>
+        <span class="shot-cta">Kunjungi <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a class="shot" href="https://kedai-kopi.clincoo.biz.id/" target="_blank" rel="noopener" aria-label="Kunjungi Kedai Kopi">
+        <img src="/img/kedai-kopi.webp?v=2" alt="Website kedai kopi Vylonium" width="1280" height="720" loading="lazy">
+        <span class="shot-name">Kedai Kopi</span>
+        <span class="shot-cta">Kunjungi <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a class="shot" href="https://kawata.clincoo.biz.id/" target="_blank" rel="noopener" aria-label="Kunjungi Kawata Console">
+        <img src="/img/kawata-console.webp?v=2" alt="Konsol gateway Kawata" width="1280" height="720" loading="lazy">
+        <span class="shot-name">Kawata Console</span>
+        <span class="shot-cta">Kunjungi <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a class="shot" href="https://tools.clincoo.buzz/tools/favicon/" target="_blank" rel="noopener" aria-label="Kunjungi Clincoo Favicon">
+        <img src="/img/favicon-generator.webp?v=2" alt="Pembuat favicon Clincoo Favicon" width="1280" height="720" loading="lazy">
+        <span class="shot-name">Clincoo Favicon</span>
+        <span class="shot-cta">Kunjungi <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
     </div>
   </section>
 
