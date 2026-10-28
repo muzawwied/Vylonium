@@ -268,8 +268,8 @@ h1 {
 }
 @media (hover: hover) { .pill:hover .logo { transform: rotate(-8deg) scale(1.08); } }
 .pill:active .logo { transform: scale(0.94); }
-.pill:nth-child(2) .logo { --a: 225deg; }
-.pill:nth-child(3) .logo { --a: 315deg; }
+.pill-row:nth-child(2) .logo { --a: 225deg; }
+.pill-row:nth-child(3) .logo { --a: 315deg; }
 .pill-t { flex: 1; min-width: 0; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.3; letter-spacing: -0.005em; overflow-wrap: anywhere; }
 
 .tabs {
@@ -318,6 +318,99 @@ footer {
   main { animation: none; }
   .ib, .pill, .pill .logo, .shot img, .shot-cta { transition: none; }
 }
+
+.pill-row { position: relative; }
+.info-btn {
+  position: absolute; top: 50%; right: 13px; transform: translateY(-50%);
+  display: flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%;
+  background: transparent; color: var(--mut); cursor: pointer;
+  transition: background-color .15s, color .15s, transform .12s;
+}
+.info-btn svg { width: 22px; height: 22px; display: block; }
+@media (hover: hover) { .info-btn:hover { background: var(--card2); color: var(--fg); } }
+.info-btn:active { transform: translateY(-50%) scale(.92); }
+.sheet { position: fixed; inset: 0; z-index: 100; display: flex; align-items: flex-end; justify-content: center; }
+.sheet-bd { position: absolute; inset: 0; background: rgba(0,0,0,.45); opacity: 0; transition: opacity .25s ease; }
+.sheet-panel {
+  position: relative; width: 100%; max-width: 560px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
+  background: var(--bg); color: var(--fg);
+  border-radius: 24px 24px 0 0; border: 1px solid var(--line); border-bottom: 0;
+  transform: translateY(100%);
+  transition: transform .3s cubic-bezier(.2,.8,.2,1), height .3s cubic-bezier(.2,.8,.2,1), border-radius .2s;
+}
+.sheet-panel.dragging { transition: none; }
+.sheet-panel.full { border-radius: 0; border-left: 0; border-right: 0; border-top: 0; }
+.sheet-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 4px 20px calc(24px + env(safe-area-inset-bottom, 0px)); }
+.sheet.open .sheet-bd { opacity: 1; }
+.sheet.open .sheet-panel { transform: none; }
+.sheet-grab { flex: none; display: flex; justify-content: center; padding: 12px 0 14px; cursor: grab; touch-action: none; }
+.sheet-grab::before { content: ""; width: 40px; height: 4px; border-radius: 9999px; background: var(--line); }
+.sheet-head { touch-action: none; }
+.sheet-panel.full .sheet-grab { padding-top: calc(12px + env(safe-area-inset-top, 0px)); }
+.sheet-panel.full .sheet-x { top: calc(12px + env(safe-area-inset-top, 0px)); }
+.sheet-x {
+  position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border: 0; border-radius: 50%;
+  background: var(--tile); color: var(--fg); cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.sheet-x svg { width: 18px; height: 18px; }
+.sheet-head { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 8px 0 0; }
+.sheet-head .logo { width: 88px; height: 88px; padding: 3px; border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 33%, #ec4899 66%, #f59e0b 100%);
+  box-shadow: 0 8px 20px -6px rgba(236,72,153,.45); }
+.sheet-title { margin-top: 14px; font-family: var(--font-display); font-weight: 800; font-size: 24px; letter-spacing: -0.02em; line-height: 1.2; }
+.sheet-sub { margin-top: 4px; font-size: 14px; color: var(--mut); }
+.sheet-go {
+  display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; min-height: 52px; margin-top: 20px;
+  border-radius: 9999px; background: var(--fg); color: var(--bg); font-weight: 600; font-size: 16px;
+  transition: transform .12s;
+}
+.sheet-go:active { transform: scale(.98); }
+.sheet-go svg { width: 16px; height: 16px; }
+.sheet-about { margin-top: 24px; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
+.sheet-desc { margin-top: 8px; font-size: 15px; line-height: 1.6; color: var(--mut); text-wrap: pretty; }
+.sheet-desc p + p { margin-top: 10px; }
+.sheet-desc h4 { margin: 22px 0 10px; font-size: 15px; font-weight: 700; color: var(--fg); letter-spacing: -0.01em; }
+.sheet-desc strong { color: var(--fg); font-weight: 600; }
+.sheet-desc a { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.5px; user-select: text; -webkit-user-select: text; }
+@media (hover: hover) { .sheet-desc a:hover { text-decoration-color: var(--mut); } }
+.feat { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.5; }
+.feat th, .feat td { padding: 12px 0; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+.feat thead th { padding-top: 0; padding-bottom: 8px; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--mut); }
+.feat tbody th { width: 30%; padding-right: 16px; font-weight: 600; color: var(--fg); white-space: nowrap; }
+.feat td { color: var(--mut); }
+.feat tbody tr:last-child th, .feat tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 420px) { .feat tbody th { width: 34%; white-space: normal; } }
+.tl { width: 100%; border-collapse: collapse; }
+.tl thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.tl td { padding: 14px 0; vertical-align: middle; border-bottom: 1px dashed var(--line); }
+.tl tbody tr:first-child td { padding-top: 4px; }
+.tl tbody tr:last-child td { border-bottom: 0; padding-bottom: 0; }
+.tl .tn { display: block; font-size: 15px; font-weight: 600; color: var(--fg); }
+.tl .td { display: block; margin-top: 2px; font-size: 13.5px; line-height: 1.5; color: var(--mut); }
+.tl .go { width: 1%; padding-left: 14px; text-align: right; white-space: nowrap; }
+.tl .go a { display: inline-flex; align-items: center; gap: 4px; padding: 7px 14px; border-radius: 9999px; background: var(--fg); color: var(--bg); font-size: 13px; font-weight: 600; text-decoration: none; }
+@media (hover: hover) { .tl .go a:hover { opacity: .85; } }
+.feat.box { border: 1px solid var(--line); border-radius: 14px; border-collapse: separate; border-spacing: 0; overflow: hidden; }
+.feat.box th, .feat.box td { padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.feat.box thead th { padding: 10px 14px; background: var(--tile); color: var(--mut); }
+.feat.box tbody th { width: 32%; border-right: 1px solid var(--line); white-space: normal; }
+.feat.box tbody tr:nth-child(even) th, .feat.box tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--tile) 45%, transparent); }
+.feat.box tbody tr:last-child th, .feat.box tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 420px) { .feat.box th, .feat.box td { padding: 10px 12px; } .feat.box tbody th { width: 36%; } }
+.steps { list-style: none; padding: 0; margin: 0; counter-reset: st; display: grid; gap: 12px; }
+.steps li { position: relative; padding-left: 36px; counter-increment: st; }
+.steps li::before { content: counter(st); position: absolute; left: 0; top: 1px; width: 24px; height: 24px; border-radius: 50%;
+  background: var(--fg); color: var(--bg); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+@media (min-width: 640px) {
+  .sheet { align-items: center; }
+  .sheet-panel { border-radius: 24px; border-bottom: 1px solid var(--line); transform: translateY(16px) scale(.97); opacity: 0; transition: transform .25s ease, opacity .25s ease; }
+  .sheet.open .sheet-panel { opacity: 1; }
+  .sheet-grab { display: none; }
+  .sheet-body { padding-top: 24px; }
+}
+body.sheet-lock { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) { .sheet-bd, .sheet-panel, .info-btn { transition: none; } }
 </style>
 </head>
 <body>
@@ -377,6 +470,7 @@ footer {
 
   <section id="panel-proyek" role="tabpanel" aria-labelledby="tab-proyek">
   <div class="pills">
+    <div class="pill-row">
     <a class="pill" href="https://www.clincoo.buzz" target="_blank" rel="noopener">
       <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
         <circle cx="16" cy="16" r="16" fill="#ffffff"/>
@@ -389,14 +483,22 @@ footer {
       </svg>
       <span class="pill-t">Clincoo</span>
     </a>
+    <button class="info-btn" type="button" data-desc="Situs utama Clincoo, pusat dari proyek-proyek yang dibangun Vylonium. (Ganti teks ini dengan penjelasan aslinya.)" data-about="about-clincoo" aria-label="Info tentang Clincoo" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7.5v5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/><circle cx="12" cy="16.6" r="1.25" fill="currentColor"/></svg></button>
+    </div>
+    <div class="pill-row">
     <a class="pill" href="https://tools.clincoo.buzz" target="_blank" rel="noopener">
       <svg class="logo" aria-hidden="true" viewBox="-13 -13 74 74"><circle cx="24" cy="24" r="37" fill="#ffffff"/><path fill="#000000" d="M3 22A19 19 0 0 1 22 3L22 22Z"/><path fill="#000000" d="M22 26L3 26A19 19 0 0 0 22 45Z"/><circle fill="#000000" cx="35.5" cy="12.5" r="9.5"/><circle fill="#000000" cx="35.5" cy="35.5" r="9.5"/></svg>
       <span class="pill-t">Clincoo Tools</span>
     </a>
+    <button class="info-btn" type="button" data-desc="Kumpulan tools gratis untuk pekerjaan sehari-hari." data-about="about-clincoo-tools" aria-label="Info tentang Clincoo Tools" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7.5v5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/><circle cx="12" cy="16.6" r="1.25" fill="currentColor"/></svg></button>
+    </div>
+    <div class="pill-row">
     <a class="pill" href="https://app.vylonium.biz.id" target="_blank" rel="noopener">
       <svg class="logo" viewBox="72 72 880 880" aria-hidden="true"><circle cx="512" cy="512" r="440" fill="#ffffff"/><path fill="#000000" d="M679.5 261.5C553.3 276.5 512.6 395.1 512 512C641.9 481.7 691.9 382.8 679.5 261.5Z"/><path fill="#000000" d="M679.5 261.5C553.3 276.5 512.6 395.1 512 512C641.9 481.7 691.9 382.8 679.5 261.5Z" transform="rotate(90 512 512)"/><path fill="#000000" d="M679.5 261.5C553.3 276.5 512.6 395.1 512 512C641.9 481.7 691.9 382.8 679.5 261.5Z" transform="rotate(180 512 512)"/><path fill="#000000" d="M679.5 261.5C553.3 276.5 512.6 395.1 512 512C641.9 481.7 691.9 382.8 679.5 261.5Z" transform="rotate(270 512 512)"/><circle fill="#000000" cx="469.2" cy="292.8" r="32.2"/><circle fill="#000000" cx="469.2" cy="292.8" r="32.2" transform="rotate(90 512 512)"/><circle fill="#000000" cx="469.2" cy="292.8" r="32.2" transform="rotate(180 512 512)"/><circle fill="#000000" cx="469.2" cy="292.8" r="32.2" transform="rotate(270 512 512)"/></svg>
       <span class="pill-t">Clincoo AI</span>
     </a>
+    <button class="info-btn" type="button" data-desc="Asisten AI berbahasa Indonesia untuk mengobrol, menulis, dan membuat website langsung dari browser." data-about="about-clincoo-ai" aria-label="Info tentang Clincoo AI" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7.5v5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/><circle cx="12" cy="16.6" r="1.25" fill="currentColor"/></svg></button>
+    </div>
   </div>
   </section>
 
@@ -459,6 +561,193 @@ footer {
   <footer>&copy; 2026 Vylonium. Seluruh hak cipta dilindungi.</footer>
 </main>
 
+<template id="about-clincoo">
+  <p>Clincoo adalah ruang kerja web untuk membuat, menyunting, dan menerbitkan website dalam satu tempat: editor kode profesional, asisten AI, template siap pakai, terminal terintegrasi, dan tombol deploy. Kamu tidak perlu memasang apa pun di komputer, cukup browser.</p>
+  <p>Artikel ini adalah peta jalan singkat dari nol sampai situs pertamamu tayang di internet.</p>
+  <h4>Fitur</h4>
+  <table class="feat">
+    <thead><tr><th scope="col">Fitur</th><th scope="col">Kegunaan</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Editor kode</th><td>Menyunting file HTML, CSS, dan JavaScript dengan editor profesional, lengkap dengan live preview.</td></tr>
+      <tr><th scope="row">Asisten AI</th><td>Menjelaskan konsep, menulis dan mengubah kode, mengelola file, sampai membantu deploy.</td></tr>
+      <tr><th scope="row">Template</th><td>Membuat situs baru dalam hitungan detik tanpa mulai dari nol.</td></tr>
+      <tr><th scope="row">Terminal</th><td>Menjalankan perintah Linux langsung dari browser untuk pekerjaan teknis.</td></tr>
+      <tr><th scope="row">Deploy</th><td>Menerbitkan situs ke internet dengan HTTPS otomatis, satu klik.</td></tr>
+      <tr><th scope="row">Terima Pembayaran</th><td>Menerima pembayaran dari pengunjung langsung di situsmu, tanpa membangun sistem pembayaran sendiri.</td></tr>
+      <tr><th scope="row">API Email</th><td>Mengirim email transaksional dan siaran ke audiensmu lewat API, lengkap dengan metrik pengiriman.</td></tr>
+      <tr><th scope="row">API AI</th><td>Memakai kemampuan AI di dalam aplikasimu sendiri lewat satu API yang siap dipanggil.</td></tr>
+      <tr><th scope="row">Server MCP</th><td>Menghubungkan proyek Clincoo ke asisten AI lewat server MCP, supaya file dan deploy bisa dikelola dari sana.</td></tr>
+      <tr><th scope="row">Kolaborator</th><td>Mengundang anggota tim sebagai kolaborator untuk mengerjakan proyek yang sama.</td></tr>
+    </tbody>
+  </table>
+  <h4>Lima langkah sampai situs pertamamu</h4>
+  <ol class="steps">
+    <li>Buat akun di <a href="https://app.clincoo.buzz" target="_blank" rel="noopener"><strong>app.clincoo.buzz</strong></a> dengan Google, GitHub, atau email.</li>
+    <li>Klik proyek baru, lalu pilih template yang paling dekat dengan kebutuhanmu: portofolio, landing page bisnis, atau toko sederhana.</li>
+    <li>Buka file di editor dan ubah isinya. Tekan simpan, dan live preview di samping langsung menampilkan perubahannya.</li>
+    <li>Bicara pada asisten AI kalau macet: minta ia menjelaskan kode yang membingungkan atau menuliskan komponen yang kamu butuhkan. Panduannya ada di artikel Asisten AI Clincoo.</li>
+    <li>Kalau sudah beres, tekan deploy. Dalam beberapa menit situsmu online dengan alamat sendiri, dan kamu bisa memasang domain kustom milikmu.</li>
+  </ol>
+  <h4>Setelah situs pertama tayang</h4>
+  <p>Dari sini kamu bisa mengembangkan ke arah mana pun: belajar konsep web lewat praktek, mengundang rekan lewat fitur kolaborasi tim, atau sekadar memoles desain sampai pas. Kalau menemui kendala, mulai dari Pusat Bantuan, hampir semua masalah umum sudah terjawab di sana.</p>
+</template>
+<template id="about-clincoo-ai">
+  <p>Clincoo AI adalah asisten AI berbahasa Indonesia yang bisa dipakai langsung lewat browser. Tanya apa saja, minta dibantu menulis, belajar, atau dibuatkan website lengkap dengan preview-nya.</p>
+  <h4>Fitur utama</h4>
+  <table class="feat box">
+    <thead><tr><th scope="col">Fitur</th><th scope="col">Kegunaan</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Chat</th><td>Mengobrol dengan jawaban yang natural dan jelas, dilengkapi saran lanjutan, pilihan jawaban, dan sketsa teks untuk wireframe atau alur.</td></tr>
+      <tr><th scope="row">Buat website</th><td>Membuat halaman atau aplikasi web, lalu menampilkannya di Canvas dengan preview, kode, dan konsol. Proyek bisa diunduh sebagai .zip.</td></tr>
+      <tr><th scope="row">Upload gambar &amp; file</th><td>Melampirkan gambar, PDF, dan dokumen agar AI bisa membaca dan membahasnya.</td></tr>
+      <tr><th scope="row">Mode suara</th><td>Berbicara langsung ke AI dan mendengarkan jawabannya dibacakan.</td></tr>
+      <tr><th scope="row">Proyek</th><td>Mengelompokkan obrolan, file, folder, dan catatan dalam satu tempat, lengkap dengan instruksi khusus. Mendukung impor folder dan ZIP.</td></tr>
+      <tr><th scope="row">Memori</th><td>Menyimpan catatan tentang preferensi dan konteksmu agar AI mengenalmu. Bisa dicari, disematkan, disalin, dan diunduh.</td></tr>
+      <tr><th scope="row">Pustaka</th><td>Mengumpulkan gambar, video, dan file dari obrolanmu. Bisa dipratinjau, diberi favorit, diganti namanya, dan diunduh.</td></tr>
+      <tr><th scope="row">Plugin</th><td>Menyambungkan GitHub, Telegram, dan Notion ke Clincoo AI.</td></tr>
+      <tr><th scope="row">Riwayat obrolan</th><td>Mencari, menyematkan, mengganti nama, dan menghapus obrolan. Bisa diunduh sebagai .md, .txt, .html, atau .json.</td></tr>
+    </tbody>
+  </table>
+  <h4>Akun &amp; data</h4>
+  <table class="feat box">
+    <thead><tr><th scope="col">Fitur</th><th scope="col">Kegunaan</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Aktivitas</th><td>Melihat ringkasan jumlah obrolan, pesan, dan proyek, grafik pesan per hari, serta perkiraan pemakaian token.</td></tr>
+      <tr><th scope="row">Kredit</th><td>Memantau sisa kredit dan riwayat pemakaian, serta top up kredit lewat QRIS.</td></tr>
+      <tr><th scope="row">Kontrol data</th><td>Data tersimpan di perangkatmu. Ekspor sebagai cadangan, impor kembali, atau hapus kapan saja.</td></tr>
+      <tr><th scope="row">Tema</th><td>Tampilan terang atau gelap yang mengikuti pengaturan perangkatmu.</td></tr>
+      <tr><th scope="row">Laporkan bug</th><td>Mengirim laporan masalah lengkap dengan jenis, tingkat keparahan, dan tangkapan layar.</td></tr>
+      <tr><th scope="row">Bantuan &amp; legal</th><td>Pusat bantuan, lisensi, kebijakan privasi, serta syarat dan ketentuan.</td></tr>
+    </tbody>
+  </table>
+</template>
+<template id="about-clincoo-tools">
+  <p>Kumpulan tools gratis untuk pekerjaan sehari-hari. Semuanya jalan langsung di browser, jadi tidak perlu instal apa pun.</p>
+  <h4>Daftar tools</h4>
+  <table class="tl">
+    <thead><tr><th scope="col">Tool</th><th scope="col">Buka</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tn">Clincoo QR</span><span class="td">Membuat kode QR dari tautan atau teks, lalu mengunduhnya untuk dicetak atau dibagikan.</span></td><td class="go"><a href="https://tools.clincoo.buzz/tools/qr/" target="_blank" rel="noopener" aria-label="Buka Clincoo QR">Buka &#8599;</a></td></tr>
+      <tr><td><span class="tn">Clincoo Favicon</span><span class="td">Membuat favicon untuk situsmu dalam berbagai ukuran, siap dipasang di halaman web.</span></td><td class="go"><a href="https://tools.clincoo.buzz/tools/favicon/" target="_blank" rel="noopener" aria-label="Buka Clincoo Favicon">Buka &#8599;</a></td></tr>
+      <tr><td><span class="tn">Clincoo Icons</span><span class="td">Mencari ikon dan memakainya untuk desain, aplikasi, atau situs yang sedang kamu kerjakan.</span></td><td class="go"><a href="https://icons.clincoo.buzz/" target="_blank" rel="noopener" aria-label="Buka Clincoo Icons">Buka &#8599;</a></td></tr>
+    </tbody>
+  </table>
+  <h4>Cara memakai</h4>
+  <ol class="steps">
+    <li>Pilih tool yang kamu butuhkan dari daftar di atas.</li>
+    <li>Isi atau atur sesuai kebutuhan langsung di halaman tool, tanpa perlu membuat akun atau memasang apa pun.</li>
+    <li>Unduh hasilnya dan pakai di proyekmu.</li>
+  </ol>
+  <h4>Kenapa Clincoo Tools</h4>
+  <p>Gratis, ringan, dan langsung jalan di browser. Cocok untuk pekerjaan kecil yang sering datang berulang, sehingga kamu tidak perlu mencari-cari aplikasi lain.</p>
+</template>
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet-bd" data-close></div>
+  <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+    <div class="sheet-grab" aria-hidden="true"></div>
+    <button class="sheet-x" type="button" data-close aria-label="Tutup"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+    <div class="sheet-body">
+    <div class="sheet-head">
+      <span id="sheet-logo"></span>
+      <h2 class="sheet-title" id="sheet-title"></h2>
+      <p class="sheet-sub" id="sheet-sub"></p>
+    </div>
+    <a class="sheet-go" id="sheet-go" href="#" target="_blank" rel="noopener">Kunjungi <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <h3 class="sheet-about">Tentang</h3>
+    <div class="sheet-desc" id="sheet-desc"></div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var sheet = document.getElementById('sheet'), last = null, timer;
+  var panel = sheet.querySelector('.sheet-panel'), mq = window.matchMedia('(max-width: 639px)'), h0 = 0, drag = null;
+  function fullH() { return window.innerHeight; }
+  function setH(h) { panel.style.height = h + 'px'; panel.classList.toggle('full', h >= fullH() - 2); }
+  function setup() {
+    panel.classList.remove('full', 'dragging');
+    panel.style.height = ''; panel.style.maxHeight = '';
+    if (!mq.matches) return;
+    panel.style.maxHeight = '70vh'; panel.style.maxHeight = '70dvh';
+    h0 = panel.offsetHeight;
+    panel.style.height = h0 + 'px'; panel.style.maxHeight = 'none';
+  }
+  function startDrag(e) {
+    if (!mq.matches) return;
+    drag = { y: e.clientY, h: panel.offsetHeight, v: 0, ly: e.clientY, lt: e.timeStamp, moved: false, grab: e.currentTarget.classList.contains('sheet-grab') };
+    e.currentTarget.setPointerCapture(e.pointerId);
+    panel.classList.add('dragging');
+  }
+  function moveDrag(e) {
+    if (!drag) return;
+    var dy = e.clientY - drag.y, dt = e.timeStamp - drag.lt;
+    if (Math.abs(dy) > 4) drag.moved = true;
+    if (dt > 0) drag.v = (e.clientY - drag.ly) / dt;
+    drag.ly = e.clientY; drag.lt = e.timeStamp;
+    if (drag.moved) setH(Math.max(0, Math.min(fullH(), drag.h - dy)));
+  }
+  function endDrag() {
+    if (!drag) return;
+    var d = drag; drag = null;
+    panel.classList.remove('dragging');
+    var cur = panel.offsetHeight, full = fullH();
+    if (!d.moved) { if (d.grab) setH(cur >= full - 2 ? h0 : full); return; }
+    var proj = cur - d.v * 200;
+    var best = [0, Math.min(h0, full), full].reduce(function (a, b) { return Math.abs(b - proj) < Math.abs(a - proj) ? b : a; });
+    if (best === 0) close(); else setH(best);
+  }
+  ['.sheet-grab', '.sheet-head'].forEach(function (sel) {
+    var el = sheet.querySelector(sel);
+    el.addEventListener('pointerdown', startDrag);
+    el.addEventListener('pointermove', moveDrag);
+    el.addEventListener('pointerup', endDrag);
+    el.addEventListener('pointercancel', endDrag);
+  });
+  function open(btn) {
+    var row = btn.closest('.pill-row'), a = row.querySelector('a.pill');
+    document.getElementById('sheet-title').textContent = a.querySelector('.pill-t').textContent;
+    var d = document.getElementById('sheet-desc'), t = btn.getAttribute('data-about');
+    d.textContent = '';
+    if (t) { d.appendChild(document.getElementById(t).content.cloneNode(true)); }
+    else { var q = document.createElement('p'); q.textContent = btn.getAttribute('data-desc'); d.appendChild(q); }
+    sheet.querySelector('.sheet-body').scrollTop = 0;
+    document.getElementById('sheet-go').href = a.href;
+    document.getElementById('sheet-sub').textContent = new URL(a.href).hostname;
+    var lg = document.getElementById('sheet-logo');
+    lg.textContent = '';
+    lg.appendChild(a.querySelector('svg.logo').cloneNode(true));
+    last = btn; clearTimeout(timer);
+    sheet.hidden = false;
+    setup();
+    document.body.classList.add('sheet-lock');
+    requestAnimationFrame(function () { requestAnimationFrame(function () {
+      sheet.classList.add('open');
+      sheet.querySelector('.sheet-x').focus();
+    }); });
+  }
+  function close() {
+    if (sheet.hidden) return;
+    sheet.classList.remove('open');
+    document.body.classList.remove('sheet-lock');
+    timer = setTimeout(function () { sheet.hidden = true; }, 300);
+    if (last) last.focus();
+  }
+  document.querySelectorAll('.info-btn').forEach(function (b) {
+    b.addEventListener('click', function () { open(b); });
+  });
+  sheet.addEventListener('click', function (e) { if (e.target.closest('[data-close]')) close(); });
+  document.addEventListener('keydown', function (e) {
+    if (sheet.hidden) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'Tab') {
+      var f = sheet.querySelectorAll('button, a[href]');
+      var first = f[0], lastEl = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); lastEl.focus(); }
+      else if (!e.shiftKey && document.activeElement === lastEl) { e.preventDefault(); first.focus(); }
+    }
+  });
+})();
+</script>
 <script>
 (function () {
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
