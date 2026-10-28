@@ -241,8 +241,32 @@ h1 {
   background: var(--tile);
   color: var(--fg);
 }
-.pill .logo { flex: none; width: 40px; height: 40px; border-radius: 50%; box-shadow: 0 0 0 1px var(--pill-bd); }
-.pill::after { content: ""; flex: none; width: 40px; }
+.pill {
+  padding: 7px;
+  min-height: 64px;
+  background: var(--tile);
+  border-color: transparent;
+  box-shadow: none;
+}
+@media (hover: hover) { .pill:hover { box-shadow: var(--pill-sh-h); } }
+.pill-t { text-transform: uppercase; letter-spacing: 0.07em; font-weight: 700; font-size: 15px; }
+.pill::after { content: ""; flex: none; width: 52px; }
+/* Logo: tetap putih, dengan cincin gradasi warna-warni */
+.pill .logo {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  padding: 2px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: linear-gradient(var(--a, 135deg), #3b82f6 0%, #8b5cf6 33%, #ec4899 66%, #f59e0b 100%);
+  box-shadow: 0 4px 12px -3px rgba(236, 72, 153, 0.45);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@media (hover: hover) { .pill:hover .logo { transform: rotate(-8deg) scale(1.08); } }
+.pill:active .logo { transform: scale(0.94); }
+.pill:nth-child(2) .logo { --a: 225deg; }
+.pill:nth-child(3) .logo { --a: 315deg; }
 .pill-t { flex: 1; min-width: 0; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.3; letter-spacing: -0.005em; overflow-wrap: anywhere; }
 
 .tabs {
@@ -280,7 +304,7 @@ footer {
 
 @media (prefers-reduced-motion: reduce) {
   main { animation: none; }
-  .ib, .pill { transition: none; }
+  .ib, .pill, .pill .logo { transition: none; }
 }
 </style>
 </head>
@@ -354,15 +378,15 @@ footer {
   <section id="panel-karya" role="tabpanel" aria-labelledby="tab-karya" hidden>
     <div class="gallery">
       <!-- Ganti tiap .shot dengan: <figure class="shot"><img src="foto.webp" alt="Deskripsi" loading="lazy"></figure> -->
-      <figure class="shot"><img src="img/undangan-pernikahan.webp" alt="Website undangan pernikahan Rafael &amp; Aurelia" width="1280" height="720" loading="lazy"></figure>
-      <figure class="shot"><img src="img/topup-game.webp" alt="Website top up game Vylonium" width="1280" height="720" loading="lazy"></figure>
-      <figure class="shot"><img src="img/tasks-dashboard.webp" alt="Dashboard aplikasi tugas Vylonium Tasks" width="1280" height="720" loading="lazy"></figure>
-      <figure class="shot"><img src="img/saas-landing.webp" alt="Landing page SaaS Vylonium" width="1280" height="720" loading="lazy"></figure>
-      <figure class="shot"><img src="img/properti.webp" alt="Website agen properti Vylonium Properti" width="1280" height="720" loading="lazy"></figure>
-      <figure class="shot"><img src="img/portfolio.webp" alt="Website portofolio developer Vylonium" width="1280" height="720" loading="lazy"></figure>
-      <figure class="shot"><img src="img/modellab-dashboard.webp" alt="Dashboard ModelLab AI Test Bench" width="1280" height="720" loading="lazy"></figure>
-      <figure class="shot"><img src="img/kedai-kopi.webp" alt="Website kedai kopi Vylonium" width="1280" height="720" loading="lazy"></figure>
-      <figure class="shot"><img src="img/kawata-console.webp" alt="Konsol gateway Kawata" width="1280" height="720" loading="lazy"></figure>
+      <figure class="shot"><img src="/img/undangan-pernikahan.webp" alt="Website undangan pernikahan Rafael &amp; Aurelia" width="1280" height="720" loading="lazy"></figure>
+      <figure class="shot"><img src="/img/topup-game.webp" alt="Website top up game Vylonium" width="1280" height="720" loading="lazy"></figure>
+      <figure class="shot"><img src="/img/tasks-dashboard.webp" alt="Dashboard aplikasi tugas Vylonium Tasks" width="1280" height="720" loading="lazy"></figure>
+      <figure class="shot"><img src="/img/saas-landing.webp" alt="Landing page SaaS Vylonium" width="1280" height="720" loading="lazy"></figure>
+      <figure class="shot"><img src="/img/properti.webp" alt="Website agen properti Vylonium Properti" width="1280" height="720" loading="lazy"></figure>
+      <figure class="shot"><img src="/img/portfolio.webp" alt="Website portofolio developer Vylonium" width="1280" height="720" loading="lazy"></figure>
+      <figure class="shot"><img src="/img/modellab-dashboard.webp" alt="Dashboard ModelLab AI Test Bench" width="1280" height="720" loading="lazy"></figure>
+      <figure class="shot"><img src="/img/kedai-kopi.webp" alt="Website kedai kopi Vylonium" width="1280" height="720" loading="lazy"></figure>
+      <figure class="shot"><img src="/img/kawata-console.webp" alt="Konsol gateway Kawata" width="1280" height="720" loading="lazy"></figure>
     </div>
   </section>
 
