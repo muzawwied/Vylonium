@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Donasi — Vylonium</title>
+<meta name="description" content="Dukung karya dan proyek Vylonium lewat donasi QRIS.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e0e10">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="icon" type="image/svg+xml" sizes="any" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Ccircle cx='48' cy='48' r='48' fill='%23f2f2f4'/%3E%3Crect x='-6.5' y='-24' width='13' height='48' rx='6.5' fill='%230e0e10' transform='translate(38.5 48) rotate(-22)'/%3E%3Crect x='-6.5' y='-24' width='13' height='48' rx='6.5' fill='%230e0e10' fill-opacity='.55' transform='translate(57.5 48) rotate(22)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{
+  --bg:#ffffff;--fg:#111111;--mut:#71717a;--card:#f4f4f5;--card2:#ececee;--line:#e5e7eb;--hov:#f4f4f6;
+  --tile:#f1f1f4;--focus:#6366f1;--ok:#16a34a;--err:#dc2626;
+  --pill-sh-h:0 2px 4px rgba(17,17,24,.06),0 10px 24px rgba(17,17,24,.10);
+  --font-display:"Montserrat",system-ui,sans-serif;--font-body:"Inter",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e0e10;--fg:#f2f2f4;--mut:#8d8d96;--card:#202025;--card2:#2a2a30;--line:#2e2e34;--hov:#222227;
+    --tile:#2a2a31;--ok:#4ade80;--err:#f87171;
+    --pill-sh-h:0 2px 4px rgba(0,0,0,.5),0 10px 24px rgba(0,0,0,.45);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e0e10;--fg:#f2f2f4;--mut:#8d8d96;--card:#202025;--card2:#2a2a30;--line:#2e2e34;--hov:#222227;
+  --tile:#2a2a31;--ok:#4ade80;--err:#f87171;
+  --pill-sh-h:0 2px 4px rgba(0,0,0,.5),0 10px 24px rgba(0,0,0,.45);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.5;
+  -webkit-tap-highlight-color:transparent;min-height:100%;
+  padding-block:calc(48px + env(safe-area-inset-top,0px)) calc(40px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+.input:focus-visible,.amt:focus-visible{outline:none}
+.input:focus,.input:focus-visible{box-shadow:none}
+[hidden]{display:none!important}
+
+main{position:relative;z-index:1;max-width:560px;margin:0 auto;display:flex;flex-direction:column;animation:vin .22s cubic-bezier(.2,.7,.2,1)}
+@keyframes vin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.profile[hidden]{display:none}
+.profile{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding-top:12px}
+h1{font-family:var(--font-display);font-weight:800;font-size:30px;line-height:1.15;letter-spacing:-.03em;text-wrap:balance}
+.bio{max-width:36ch;margin-top:6px;font-size:14px;line-height:1.5;color:var(--mut);text-wrap:pretty}
+
+.label{margin:28px 0 10px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.amounts{display:flex;flex-wrap:wrap;gap:8px}
+.amt{
+  min-height:42px;padding:0 20px;border:1px solid transparent;border-radius:9999px;background:var(--tile);color:var(--fg);
+  font:inherit;font-size:15px;font-weight:500;font-variant-numeric:tabular-nums;cursor:pointer;
+  transition:transform .2s cubic-bezier(.2,.7,.2,1),box-shadow .2s ease,background-color .2s,color .2s;
+}
+@media (hover:hover){.amt:hover{transform:translateY(-1px);box-shadow:var(--pill-sh-h)}}
+.amt:active{transform:scale(.95)}
+.amt[aria-pressed="true"]{background:var(--fg);color:var(--bg);font-weight:600}
+
+.field{display:block;margin-top:12px}
+.field>span{display:block;margin-bottom:6px;font-size:13px;color:var(--mut)}
+.input{
+  width:100%;min-height:52px;padding:12px 18px;border:1px solid var(--line);border-radius:18px;
+  background:var(--tile);color:var(--fg);font:inherit;font-size:16px;
+  transition:border-color .15s,box-shadow .15s;
+}
+.input::placeholder{color:var(--mut)}
+.input:focus{border-color:var(--fg)}
+textarea.input{min-height:84px;resize:vertical;line-height:1.5}
+.money{position:relative}
+.money b{position:absolute;left:18px;top:50%;transform:translateY(-50%);font-weight:600;color:var(--mut);pointer-events:none}
+.money .input{padding-left:48px;font-weight:600}
+.meta{margin-top:6px;font-size:12px;color:var(--err);text-align:right}
+
+.method{margin-top:14px;font-size:13px;color:var(--mut);text-align:center;text-wrap:pretty}
+
+.go{
+  display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:54px;margin-top:20px;
+  border:0;border-radius:9999px;background:var(--fg);color:var(--bg);font:inherit;font-weight:600;font-size:16px;cursor:pointer;
+  transition:transform .12s,opacity .15s;
+}
+.go:active{transform:scale(.98)}
+.go:disabled{opacity:.5;cursor:default}
+.go.ghost{background:var(--tile);color:var(--fg)}
+@media (hover:hover){.go:not(:disabled):hover{opacity:.88}}
+.err{margin-top:12px;font-size:14px;color:var(--err);text-align:center}
+.spin{width:18px;height:18px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* Pembayaran */
+.pay{text-align:center}
+.pay h2{margin-top:4px;font-family:var(--font-display);font-weight:800;font-size:22px;line-height:1.2;letter-spacing:-.02em}
+.pay .sub{max-width:32ch;margin:6px auto 0;font-size:14px;color:var(--mut);text-wrap:balance}
+.timer{display:inline-flex;align-items:center;gap:8px;margin-top:8px;font-size:14px;font-weight:500;color:var(--mut);font-variant-numeric:tabular-nums}
+.timer::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--ok)}
+.timer.dead{color:var(--err)}
+.timer.dead::before{background:var(--err)}
+
+.how{margin-top:22px;text-align:left}
+.how h3{margin-bottom:10px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.how ol{list-style:none;padding:0;display:flex;flex-direction:column;gap:18px}
+.how li{display:flex;align-items:center;gap:14px}
+.how .ill{flex:none;width:72px;height:72px;display:flex;align-items:center;justify-content:center}
+.how .ill svg{width:72px;height:72px;overflow:visible}
+.how strong{display:block;font-size:14px;font-weight:600}
+.how li p{margin-top:2px;font-size:13px;line-height:1.45;color:var(--mut);text-wrap:pretty}
+.qr{
+  display:flex;align-items:center;justify-content:center;width:fit-content;margin:18px auto 0;padding:14px;
+  border-radius:24px;background:#fff;box-shadow:0 1px 2px rgba(17,17,24,.06),0 8px 24px rgba(17,17,24,.10);
+}
+.qr img,.qr canvas{display:block;width:240px!important;height:240px!important}
+.qr.dead{opacity:.25;filter:grayscale(1)}
+.total{margin-top:20px;font-family:var(--font-display);font-weight:800;font-size:30px;letter-spacing:-.03em}
+.rows{margin-top:22px;padding:6px 0;background:var(--card);border-radius:18px;text-align:left}
+.rows div{display:flex;justify-content:space-between;gap:12px;padding:10px 18px;font-size:14px}
+.rows span{color:var(--mut)}
+.rows b{font-weight:600;text-align:right;overflow-wrap:anywhere}
+.note{margin-top:14px;font-size:12px;color:var(--mut);text-wrap:pretty}
+
+.done{text-align:center;padding-top:28px}
+/* Sukses 3D */
+.stage{position:relative;width:220px;height:220px;margin:0 auto;perspective:700px;display:flex;align-items:center;justify-content:center}
+.float{transform-style:preserve-3d}
+.stage.play .float{animation:tilt 3.4s ease-in-out .8s infinite alternate}
+.coin{position:relative;width:112px;height:112px;transform-style:preserve-3d;opacity:0}
+.stage.play .coin{animation:coinIn 1.4s cubic-bezier(.2,.8,.25,1) forwards}
+.coin i,.coin .face{position:absolute;inset:0;border-radius:50%}
+.coin i{background:#15803d}
+.face{display:flex;align-items:center;justify-content:center;color:#fff;backface-visibility:hidden;
+  background:radial-gradient(circle at 30% 22%,#bbf7d0 0%,#4ade80 20%,#22c55e 52%,#15803d 100%);
+  box-shadow:inset 0 2px 3px rgba(255,255,255,.6),inset 0 -10px 16px rgba(20,83,45,.38)}
+.face.back{background:linear-gradient(145deg,#22c55e,#15803d)}
+.face::before{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(155deg,rgba(255,255,255,.38) 0%,rgba(255,255,255,0) 46%)}
+.face::after{content:"";position:absolute;inset:13px;border-radius:50%;background:radial-gradient(circle at 38% 30%,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 65%),linear-gradient(160deg,rgba(21,128,61,.18),rgba(134,239,172,.12));box-shadow:inset 0 5px 12px rgba(20,83,45,.16),0 2px 6px rgba(255,255,255,.18)}
+.face.front{transform:translateZ(8px)}
+.face.back{transform:rotateY(180deg) translateZ(8px)}
+.face svg{position:relative;z-index:1;width:50px;height:50px;filter:drop-shadow(0 2px 2px rgba(20,83,45,.5))}
+.stage.play .face.front path{stroke-dasharray:24;animation:draw .55s ease-out 1.05s both}
+.shadow{position:absolute;left:50%;bottom:14px;width:96px;height:14px;margin-left:-48px;border-radius:50%;background:#052e16;opacity:0;filter:blur(7px)}
+.stage.play .shadow{animation:shadow 1.4s ease-out forwards}
+.ring{position:absolute;left:50%;top:50%;width:112px;height:112px;margin:-56px 0 0 -56px;border-radius:50%;background:radial-gradient(circle,rgba(34,197,94,.3) 58%,rgba(34,197,94,0) 72%);opacity:0}
+.stage.play .ring{animation:ring 1.6s cubic-bezier(.2,.7,.2,1) 1s forwards}
+.stage.play .ring.r2{animation-delay:1.25s}
+.confetti{position:absolute;left:50%;top:50%;width:0;height:0;pointer-events:none}
+.confetti span{position:absolute;width:8px;height:14px;margin:-7px 0 0 -4px;border-radius:2px;background:var(--c);opacity:0}
+.stage.play .confetti span{animation:burst 1.9s cubic-bezier(.12,.8,.3,1) var(--d) forwards}
+.done h2,.done p{animation:vin .5s cubic-bezier(.2,.7,.2,1) .9s both}
+.done .go{animation:fade .5s ease .9s both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes coinIn{
+  0%{opacity:0;transform:translateY(60px) scale(.35) rotateY(-900deg)}
+  12%{opacity:1}
+  100%{opacity:1;transform:translateY(0) scale(1) rotateY(0)}
+}
+@keyframes tilt{from{transform:rotateY(-26deg) rotateX(12deg) translateY(2px)}to{transform:rotateY(26deg) rotateX(-8deg) translateY(-8px)}}
+@keyframes draw{from{stroke-dashoffset:24}to{stroke-dashoffset:0}}
+@keyframes shadow{0%{opacity:0;transform:scaleX(.3)}100%{opacity:.4;transform:scaleX(1)}}
+@keyframes ring{from{opacity:.35;transform:scale(1)}to{opacity:0;transform:scale(2.5)}}
+@keyframes burst{
+  0%{opacity:1;transform:translate3d(0,0,0) rotate3d(1,1,0,0deg) scale(.4)}
+  70%{opacity:1}
+  100%{opacity:0;transform:translate3d(var(--dx),var(--dy),0) rotate3d(1,.6,.3,var(--r)) scale(1)}
+}
+.done h2{margin-top:20px;font-family:var(--font-display);font-weight:800;font-size:24px;letter-spacing:-.02em}
+.done p{margin-top:8px;font-size:15px;color:var(--mut);text-wrap:pretty}
+
+footer{margin-top:40px;text-align:center;font-size:12px;color:var(--mut)}
+@media (prefers-reduced-motion:reduce){main{animation:none}.amt,.go,.spin{transition:none;animation:none}.stage *,.done h2,.done p,.done .go{animation:none!important}.coin{opacity:1}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+  
+    <g id="phoneShell">
+      <ellipse cx="32" cy="62.2" rx="14" ry="1.3" fill="#000" opacity=".1"/>
+      <rect x="14.2" y="16" width="1.5" height="5.5" rx=".75" fill="#71717a"/>
+      <rect x="14.2" y="23.5" width="1.5" height="9" rx=".75" fill="#71717a"/>
+      <rect x="48.3" y="20" width="1.5" height="12" rx=".75" fill="#71717a"/>
+      <rect x="15.5" y="2.5" width="33" height="58" rx="8.5" fill="#52525b"/>
+      <rect x="17.5" y="4.5" width="29" height="54" rx="6.7" fill="#f4f4f5"/>
+      <rect x="27" y="6.8" width="10" height="2.8" rx="1.4" fill="#52525b"/>
+      <rect x="27" y="55.3" width="10" height="1.3" rx=".65" fill="#a1a1aa"/>
+    </g>
+  </defs>
+</svg>
+
+<main>
+  <header class="profile">
+    <h1>Dukung Vylonium</h1>
+    <p class="bio">Donasimu membantu saya terus membangun aplikasi web dan alat AI. Berapa pun nominalnya, terima kasih.</p>
+  </header>
+
+  <!-- 1. Form -->
+  <section id="v-form" aria-label="Form donasi">
+    <p class="label">Pilih nominal</p>
+    <div class="amounts" id="amounts" role="group" aria-label="Nominal donasi">
+      <button class="amt" type="button" data-v="5000">5.000</button>
+      <button class="amt" type="button" data-v="10000" aria-pressed="true">10.000</button>
+      <button class="amt" type="button" data-v="25000">25.000</button>
+      <button class="amt" type="button" data-v="50000">50.000</button>
+      <button class="amt" type="button" data-v="100000">100.000</button>
+      <button class="amt" type="button" data-v="250000">250.000</button>
+    </div>
+
+    <label class="field"><span>Nominal lain</span>
+      <div class="money"><b>Rp</b><input class="input" id="amount" inputmode="numeric" autocomplete="off" placeholder="10.000"></div>
+    </label>
+    <p class="meta" id="min-hint" role="alert" hidden>Minimal donasi Rp1.000</p>
+
+    <label class="field"><span>Nama (opsional)</span>
+      <input class="input" id="name" maxlength="40" autocomplete="name" placeholder="Anonim">
+    </label>
+    <label class="field"><span>Pesan (opsional)</span>
+      <textarea class="input" id="msg" maxlength="200" placeholder="Tulis pesan untuk Vylonium"></textarea>
+    </label>
+
+    <button class="go" id="donate" type="button">Donasi sekarang</button>
+    <p class="err" id="err" role="alert" hidden></p>
+    <p class="method">Catatan: Pembayaran hanya melalui QRIS dan bisa memakai e-wallet atau mobile banking apa pun.</p>
+  </section>
+
+  <!-- 2. Pembayaran -->
+  <section id="v-pay" class="pay" aria-live="polite" hidden>
+    <h2>Scan untuk membayar</h2>
+    <p class="timer" id="timer">Memuat…</p>
+    <div class="qr" id="qr"></div>
+    <p class="total" id="total"></p>
+    <div class="rows">
+      <div><span>Donasi</span><b id="r-amt"></b></div>
+      <div><span>ID transaksi</span><b id="r-id"></b></div>
+    </div>
+
+    <div class="how">
+      <h3>Cara membayar</h3>
+      <ol>
+        <li>
+          <div class="ill" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><use href="#phoneShell"/>
+              <circle cx="23.5" cy="15" r="2.6" fill="#a1a1aa"/>
+              <rect x="28" y="13.8" width="11" height="2.4" rx="1.2" fill="#d4d4d8"/>
+              <rect x="20.5" y="19.5" width="23" height="12" rx="3.5" fill="#a1a1aa"/>
+              <rect x="23.5" y="22.5" width="8" height="2" rx="1" fill="#f4f4f5" opacity=".8"/>
+              <rect x="23.5" y="26.5" width="13" height="2.6" rx="1.3" fill="#f4f4f5"/>
+              <g fill="#d4d4d8"><circle cx="24.5" cy="38" r="3"/><circle cx="30.8" cy="38" r="3"/><circle cx="37.2" cy="38" r="3"/><circle cx="43.5" cy="38" r="0"/></g>
+              <circle cx="37.2" cy="38" r="3" fill="#71717a"/>
+              <circle cx="23.5" cy="46" r="2.2" fill="#d4d4d8"/><rect x="27.5" y="44.8" width="12" height="2.4" rx="1.2" fill="#d4d4d8"/>
+              <circle cx="23.5" cy="51.5" r="2.2" fill="#e4e4e7"/><rect x="27.5" y="50.3" width="9" height="2.4" rx="1.2" fill="#e4e4e7"/>
+            </svg>
+          </div>
+          <div><strong>1. Buka aplikasi pembayaran</strong><p>Pakai e-wallet atau mobile banking apa pun yang mendukung QRIS.</p></div>
+        </li>
+        <li>
+          <div class="ill" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><use href="#phoneShell"/>
+              <g fill="#52525b">
+                <rect x="24" y="19" width="6" height="6" rx="1.3"/><rect x="34" y="19" width="6" height="6" rx="1.3"/><rect x="24" y="29" width="6" height="6" rx="1.3"/>
+                <rect x="31.5" y="19" width="2" height="2"/><rect x="31.5" y="22.5" width="2" height="2"/>
+                <rect x="25" y="26.5" width="2" height="2"/><rect x="29" y="26.5" width="2" height="2"/><rect x="33" y="26.5" width="2" height="2"/><rect x="37" y="26.5" width="3" height="2"/>
+                <rect x="32" y="30.5" width="2" height="2"/><rect x="36" y="30.5" width="2" height="2"/><rect x="34" y="33.5" width="2" height="2"/><rect x="38" y="33" width="2" height="2.5"/>
+              </g>
+              <g fill="#f4f4f5"><rect x="25.5" y="20.5" width="3" height="3"/><rect x="35.5" y="20.5" width="3" height="3"/><rect x="25.5" y="30.5" width="3" height="3"/></g>
+              <path d="M21 20.5V19a3 3 0 0 1 3-3h1.5M38.5 16H40a3 3 0 0 1 3 3v1.5M43 33.5V35a3 3 0 0 1-3 3h-1.5M25.5 38H24a3 3 0 0 1-3-3v-1.5" fill="none" stroke="#71717a" stroke-width="1.5" stroke-linecap="round"/>
+              <rect x="24" y="43.5" width="16" height="2.4" rx="1.2" fill="#d4d4d8"/><rect x="26.5" y="48" width="11" height="2.4" rx="1.2" fill="#e4e4e7"/>
+            </svg>
+          </div>
+          <div><strong>2. Scan kode QR</strong><p>Pilih menu Scan atau Bayar, lalu arahkan kamera ke QR di atas.</p></div>
+        </li>
+        <li>
+          <div class="ill" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><use href="#phoneShell"/>
+              <circle cx="32" cy="23" r="10.5" fill="#e4e4e7"/>
+              <circle cx="32" cy="23" r="7.5" fill="#71717a"/>
+              <path d="M28.2 23.3l2.9 2.9 5.2-5.7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="20.5" y="37" width="23" height="15" rx="3.5" fill="#e4e4e7"/>
+              <rect x="23.5" y="40" width="9" height="2" rx="1" fill="#a1a1aa"/>
+              <rect x="23.5" y="44" width="14" height="2.6" rx="1.3" fill="#71717a"/>
+              <rect x="23.5" y="48.2" width="7" height="1.8" rx=".9" fill="#d4d4d8"/>
+            </svg>
+          </div>
+          <div><strong>3. Konfirmasi pembayaran</strong><p>Cek nominal lalu masukkan PIN. Halaman ini otomatis lanjut setelah lunas.</p></div>
+        </li>
+      </ol>
+    </div>
+    <button class="go ghost" id="dl" type="button">Download QRIS</button>
+    <button class="go ghost" id="cancel" type="button">Batal</button>
+    <p class="note">Halaman ini memeriksa status pembayaran otomatis. Tetap buka sampai muncul konfirmasi.</p>
+  </section>
+
+  <!-- 3. Sukses -->
+  <section id="v-done" class="done" hidden>
+    <div class="stage" id="stage" aria-hidden="true">
+      <div class="ring"></div><div class="ring r2"></div>
+      <div class="shadow"></div>
+      <div class="float">
+        <div class="coin" id="coin">
+          <div class="face front"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 12.6l3.9 3.9 7.2-8"/></svg></div>
+          <div class="face back"></div>
+        </div>
+      </div>
+      <div class="confetti" id="confetti"></div>
+    </div>
+    <h2>Terima kasih!</h2>
+    <p id="done-t">Donasimu sudah kami terima.</p>
+    <button class="go ghost" id="again" type="button">Donasi lagi</button>
+  </section>
+
+  <footer>&copy; 2026 Vylonium. Seluruh hak cipta dilindungi.</footer>
+</main>
+
+<script>
+(function () {
+  var API = 'https://app.vylonium.my.id';
+  var $ = function (id) { return document.getElementById(id); };
+  var rp = function (n) { return 'Rp' + Number(n).toLocaleString('id-ID'); };
+  var views = ['v-form', 'v-pay', 'v-done'];
+  function show(id) {
+    views.forEach(function (v) { $(v).hidden = v !== id; });
+    document.querySelector('.profile').hidden = id !== 'v-form';
+    document.querySelector('footer').hidden = id !== 'v-form';
+    window.scrollTo(0, 0);
+  }
+
+  var amountEl = $('amount'), btns = Array.prototype.slice.call(document.querySelectorAll('.amt'));
+  var poll = null, tick = null, txn = null, qrObj = null;
+
+  function digits(s) { return String(s).replace(/\D/g, ''); }
+  function fmtInput() { var d = digits(amountEl.value); amountEl.value = d ? Number(d).toLocaleString('id-ID') : ''; }
+  function pick(v) {
+    btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.v === String(v) ? 'true' : 'false'); });
+  }
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      amountEl.value = Number(b.dataset.v).toLocaleString('id-ID'); pick(b.dataset.v); hint();
+    });
+  });
+  function hint() { var d = digits(amountEl.value); $('min-hint').hidden = !(d && Number(d) < 1000); }
+  amountEl.addEventListener('input', function () { fmtInput(); pick(digits(amountEl.value)); hint(); });
+  amountEl.value = '10.000';
+
+  function showErr(m) { var e = $('err'); e.textContent = m; e.hidden = !m; }
+  function stop() { clearInterval(poll); clearInterval(tick); poll = tick = null; }
+
+  function pickId(o, keys) {
+    if (!o || typeof o !== 'object') return null;
+    for (var i = 0; i < keys.length; i++) if (o[keys[i]] != null && typeof o[keys[i]] !== 'object') return o[keys[i]];
+    for (var k in o) { var f = pickId(o[k], keys); if (f != null) return f; }
+    return null;
+  }
+  function isPaid(s) { return /complete|paid|success|settle/i.test(s || ''); }
+  function isDead(s) { return /fail|expire|cancel/i.test(s || ''); }
+
+  function setDead(text) {
+    stop();
+    $('qr').classList.add('dead');
+    $('timer').classList.add('dead');
+    $('timer').textContent = text + ' · Pembayaran tidak bisa dilanjutkan';
+  }
+
+  function startTimer(expires) {
+    var end = new Date(expires).getTime();
+    if (!end) { $('timer').textContent = 'Selesaikan pembayaran sebelum kedaluwarsa'; return; }
+    function t() {
+      var s = Math.max(0, Math.floor((end - Date.now()) / 1000));
+      if (s === 0) { setDead('Kedaluwarsa'); return; }
+      var m = Math.floor(s / 60), r = s % 60;
+      $('timer').textContent = 'Selesaikan dalam ' + m + ':' + (r < 10 ? '0' : '') + r;
+    }
+    t(); tick = setInterval(t, 1000);
+  }
+
+  function drawQR(text) {
+    var box = $('qr'); box.textContent = ''; box.classList.remove('dead');
+    if (window.QRCode) {
+      qrObj = new QRCode(box, { text: text, width: 240, height: 240, correctLevel: QRCode.CorrectLevel.L });
+    } else {
+      box.style.padding = '14px'; box.style.color = '#111'; box.style.fontSize = '12px'; box.style.maxWidth = '280px';
+      box.style.wordBreak = 'break-all'; box.textContent = text;
+    }
+  }
+
+  async function check() {
+    if (!txn) return;
+    try {
+      var r = await fetch(API + '/status/' + encodeURIComponent(txn));
+      var j = await r.json();
+      var s = pickId(j, ['status', 'state', 'transaction_status']);
+      if (isPaid(s)) {
+        stop(); $('done-t').textContent = 'Donasi ' + rp($('r-amt').dataset.v) + ' sudah kami terima. Semoga harimu menyenangkan.';
+        show('v-done'); celebrate();
+      } else if (isDead(s)) setDead(/expire/i.test(s) ? 'Kedaluwarsa' : 'Dibatalkan');
+    } catch (e) { /* abaikan, coba lagi di putaran berikutnya */ }
+  }
+
+  $('donate').addEventListener('click', async function () {
+    var amt = Number(digits(amountEl.value));
+    showErr('');
+    if (!amt || amt < 1000) { showErr('Minimal donasi Rp1.000.'); amountEl.focus(); return; }
+    var b = $('donate'); b.disabled = true; b.innerHTML = '<span class="spin"></span>'; b.setAttribute('aria-label', 'Membuat QRIS');
+    var rnd = '', abc = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    try { var u = new Uint8Array(18); crypto.getRandomValues(u); for (var k = 0; k < u.length; k++) rnd += abc[u[k] % 36]; }
+    catch (e) { for (var k2 = 0; k2 < 18; k2++) rnd += abc[Math.floor(Math.random() * 36)]; }
+    var orderId = 'V-' + rnd;
+    try {
+      var r = await fetch(API + '/create', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          order_id: orderId, amount: amt, method: 'qris',
+          name: $('name').value.trim(), message: $('msg').value.trim()
+        })
+      });
+      var j = await r.json();
+      if (!r.ok || !j.qr_string) throw new Error((j && (j.error || j.message)) || 'Gagal membuat transaksi.');
+      txn = j.txn_id || orderId;
+      drawQR(j.qr_string);
+      $('total').textContent = rp(j.total_payment != null ? j.total_payment : amt);
+      $('r-amt').textContent = rp(j.amount != null ? j.amount : amt); $('r-amt').dataset.v = j.amount != null ? j.amount : amt;
+      $('r-id').textContent = orderId;
+      $('timer').classList.remove('dead');
+      $('dl').dataset.q = j.qr_string;
+      show('v-pay');
+      startTimer(j.expires_at);
+      poll = setInterval(check, 4000);
+    } catch (e) {
+      showErr(e.message || 'Terjadi kesalahan. Coba lagi.');
+    } finally {
+      b.disabled = false; b.removeAttribute('aria-label'); b.textContent = 'Donasi sekarang';
+    }
+  });
+
+  function saveBlob(blob, name) {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  }
+
+  $('dl').addEventListener('click', function () {
+    var b = this, src = $('qr').querySelector('canvas') || $('qr').querySelector('img');
+    var did = $('r-id').textContent || txn || 'donasi', name = 'qris-' + did + '.png';
+    if (!src) { saveBlob(new Blob([b.dataset.q || ''], { type: 'text/plain' }), 'qris-' + did + '.txt'); return; }
+    try {
+      var pad = 32, size = 480, c = document.createElement('canvas');
+      c.width = c.height = size + pad * 2;
+      var x = c.getContext('2d');
+      x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height);
+      x.imageSmoothingEnabled = false;
+      x.drawImage(src, pad, pad, size, size);
+      c.toBlob(function (blob) {
+        if (blob) saveBlob(blob, name);
+        else { b.textContent = 'Gagal download'; setTimeout(function () { b.textContent = 'Download QRIS'; }, 1600); }
+      }, 'image/png');
+    } catch (e) {
+      b.textContent = 'Gagal download';
+      setTimeout(function () { b.textContent = 'Download QRIS'; }, 1600);
+    }
+  });
+
+  // Koin 3D: tumpuk lapisan tipis agar punya ketebalan
+  (function () {
+    var coin = $('coin'), front = coin.firstElementChild;
+    for (var z = -7; z <= 7; z += 1) {
+      var s = document.createElement('i'); s.style.transform = 'translateZ(' + z + 'px)';
+      s.style.background = 'hsl(142 72% ' + (22 + (z + 7) * 0.7).toFixed(1) + '%)'; coin.insertBefore(s, front);
+    }
+  })();
+
+  function celebrate() {
+    var s = $('stage'), c = $('confetti'), cols = ['var(--fg)', 'var(--mut)', '#6366f1', '#16a34a', '#f59e0b', '#ec4899'];
+    c.textContent = '';
+    for (var i = 0; i < 42; i++) {
+      var p = document.createElement('span'), a = Math.random() * Math.PI * 2, d = 70 + Math.random() * 90;
+      p.style.setProperty('--dx', Math.cos(a) * d + 'px');
+      p.style.setProperty('--dy', Math.sin(a) * d * 0.8 + 40 + 'px');
+      p.style.setProperty('--r', 360 + Math.random() * 540 + 'deg');
+      p.style.setProperty('--d', 0.9 + Math.random() * 0.3 + 's');
+      p.style.setProperty('--c', cols[i % cols.length]);
+      c.appendChild(p);
+    }
+    s.classList.remove('play'); void s.offsetWidth; s.classList.add('play');
+  }
+
+  function reset() { stop(); txn = null; $('qr').textContent = ''; show('v-form'); }
+  $('cancel').addEventListener('click', reset);
+  $('again').addEventListener('click', reset);
+})();
+</script>
+</body>
+</html>
