@@ -244,6 +244,33 @@ h1 {
 .pill .logo { flex: none; width: 40px; height: 40px; border-radius: 50%; box-shadow: 0 0 0 1px var(--pill-bd); }
 .pill::after { content: ""; flex: none; width: 40px; }
 .pill-t { flex: 1; min-width: 0; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.3; letter-spacing: -0.005em; overflow-wrap: anywhere; }
+
+.tabs {
+  display: flex;
+  margin-top: 24px;
+  border-bottom: 1px solid var(--line);
+}
+.tab {
+  flex: 1;
+  min-height: 44px;
+  padding: 12px 8px;
+  margin-bottom: -1px;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--mut);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab[aria-selected="true"] { color: var(--fg); font-weight: 600; border-bottom-color: var(--fg); }
+@media (hover: hover) { .tab:hover { color: var(--fg); } }
+#panel-proyek .pills { margin-top: 20px; }
+.gallery { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
+.shot { aspect-ratio: 16 / 9; margin: 0; border-radius: 16px; overflow: hidden; background: var(--card); border: 1px solid var(--line); }
+.shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
 footer {
   margin-top: 40px;
   text-align: center;
@@ -294,6 +321,12 @@ footer {
     </nav>
   </header>
 
+  <div class="tabs" role="tablist" aria-label="Menu">
+    <button class="tab" role="tab" id="tab-proyek" aria-controls="panel-proyek" aria-selected="true" type="button">Proyek</button>
+    <button class="tab" role="tab" id="tab-karya" aria-controls="panel-karya" aria-selected="false" tabindex="-1" type="button">Karya</button>
+  </div>
+
+  <section id="panel-proyek" role="tabpanel" aria-labelledby="tab-proyek">
   <div class="pills">
     <a class="pill" href="https://www.clincoo.buzz" target="_blank" rel="noopener">
       <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
@@ -315,21 +348,53 @@ footer {
       <svg class="logo" viewBox="72 72 880 880" aria-hidden="true"><circle cx="512" cy="512" r="440" fill="#ffffff"/><path fill="#000000" d="M679.5 261.5C553.3 276.5 512.6 395.1 512 512C641.9 481.7 691.9 382.8 679.5 261.5Z"/><path fill="#000000" d="M679.5 261.5C553.3 276.5 512.6 395.1 512 512C641.9 481.7 691.9 382.8 679.5 261.5Z" transform="rotate(90 512 512)"/><path fill="#000000" d="M679.5 261.5C553.3 276.5 512.6 395.1 512 512C641.9 481.7 691.9 382.8 679.5 261.5Z" transform="rotate(180 512 512)"/><path fill="#000000" d="M679.5 261.5C553.3 276.5 512.6 395.1 512 512C641.9 481.7 691.9 382.8 679.5 261.5Z" transform="rotate(270 512 512)"/><circle fill="#000000" cx="469.2" cy="292.8" r="32.2"/><circle fill="#000000" cx="469.2" cy="292.8" r="32.2" transform="rotate(90 512 512)"/><circle fill="#000000" cx="469.2" cy="292.8" r="32.2" transform="rotate(180 512 512)"/><circle fill="#000000" cx="469.2" cy="292.8" r="32.2" transform="rotate(270 512 512)"/></svg>
       <span class="pill-t">Clincoo AI</span>
     </a>
-    <a class="pill" href="https://docs.clincoo.buzz" target="_blank" rel="noopener">
-      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
-        <circle cx="16" cy="16" r="16" fill="#ffffff"/>
-        <g fill="#000000">
-          <path d="M10 16C7 10 9 7 12 7C14 7 15 11 13 16Z"/><path d="M12 9C10.5 11 11 13 12 14.5C13 13 13.5 11 12 9Z" fill="#ffffff" opacity="0.25"/>
-          <path d="M22 16C25 10 23 7 20 7C18 7 17 11 19 16Z"/><path d="M20 9C21.5 11 21 13 20 14.5C19 13 18.5 11 20 9Z" fill="#ffffff" opacity="0.25"/>
-          <path d="M16 27C24 27 28 22.5 28 17C28 12.5 21 11.5 16 11.5C11 11.5 4 12.5 4 17C4 22.5 8 27 16 27Z"/>
-        </g>
-        <circle cx="12.5" cy="17" r="1.5" fill="#ffffff" opacity="0.6"/><circle cx="19.5" cy="17" r="1.5" fill="#ffffff" opacity="0.6"/><polygon points="16,20 15,18.5 17,18.5" fill="#ffffff" opacity="0.5"/>
-      </svg>
-      <span class="pill-t">Clincoo Docs</span>
-    </a>
   </div>
+  </section>
+
+  <section id="panel-karya" role="tabpanel" aria-labelledby="tab-karya" hidden>
+    <div class="gallery">
+      <!-- Ganti tiap .shot dengan: <figure class="shot"><img src="foto.webp" alt="Deskripsi" loading="lazy"></figure> -->
+      <figure class="shot"><img src="img/undangan-pernikahan.webp" alt="Website undangan pernikahan Rafael &amp; Aurelia" width="1280" height="720" loading="lazy"></figure>
+      <figure class="shot"><img src="img/topup-game.webp" alt="Website top up game Vylonium" width="1280" height="720" loading="lazy"></figure>
+      <figure class="shot"><img src="img/tasks-dashboard.webp" alt="Dashboard aplikasi tugas Vylonium Tasks" width="1280" height="720" loading="lazy"></figure>
+      <figure class="shot"><img src="img/saas-landing.webp" alt="Landing page SaaS Vylonium" width="1280" height="720" loading="lazy"></figure>
+      <figure class="shot"><img src="img/properti.webp" alt="Website agen properti Vylonium Properti" width="1280" height="720" loading="lazy"></figure>
+      <figure class="shot"><img src="img/portfolio.webp" alt="Website portofolio developer Vylonium" width="1280" height="720" loading="lazy"></figure>
+      <figure class="shot"><img src="img/modellab-dashboard.webp" alt="Dashboard ModelLab AI Test Bench" width="1280" height="720" loading="lazy"></figure>
+      <figure class="shot"><img src="img/kedai-kopi.webp" alt="Website kedai kopi Vylonium" width="1280" height="720" loading="lazy"></figure>
+      <figure class="shot"><img src="img/kawata-console.webp" alt="Konsol gateway Kawata" width="1280" height="720" loading="lazy"></figure>
+    </div>
+  </section>
 
   <footer>&copy; 2026 Vylonium. Seluruh hak cipta dilindungi.</footer>
 </main>
 
+<script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var paths = { proyek: '/', karya: '/karya' };
+  function show(name, push) {
+    tabs.forEach(function (t) {
+      var on = t.id === 'tab-' + name;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (push) { try { history.pushState(null, '', paths[name]); } catch (e) {} }
+  }
+  function fromPath() {
+    return location.pathname.replace(/\/+$/, '') === '/karya' ? 'karya' : 'proyek';
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { show(t.id.replace('tab-', ''), true); });
+    t.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      var n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+      n.focus(); show(n.id.replace('tab-', ''), true);
+    });
+  });
+  window.addEventListener('popstate', function () { show(fromPath(), false); });
+  show(fromPath(), false);
+})();
+</script>
 </body></html>
