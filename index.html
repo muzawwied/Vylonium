@@ -360,13 +360,15 @@ footer {
   box-shadow: 0 8px 20px -6px rgba(236,72,153,.45); }
 .sheet-title { margin-top: 14px; font-family: var(--font-display); font-weight: 800; font-size: 24px; letter-spacing: -0.02em; line-height: 1.2; }
 .sheet-sub { margin-top: 4px; font-size: 14px; color: var(--mut); }
-.sheet-go {
-  display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; min-height: 52px; margin-top: 20px;
-  border-radius: 9999px; background: var(--fg); color: var(--bg); font-weight: 600; font-size: 16px;
-  transition: transform .12s;
+.sheet-actions { display: flex; gap: 10px; margin-top: 20px; }
+.sheet-go, .sheet-share {
+  display: flex; align-items: center; justify-content: center; gap: 6px; flex: 1 1 0; min-width: 0; min-height: 52px;
+  border: 0; border-radius: 9999px; background: var(--fg); color: var(--bg); font: inherit; font-weight: 600; font-size: 16px;
+  cursor: pointer; transition: transform .12s;
 }
-.sheet-go:active { transform: scale(.98); }
-.sheet-go svg { width: 16px; height: 16px; }
+.sheet-share { background: var(--tile); color: var(--fg); }
+.sheet-go:active, .sheet-share:active { transform: scale(.98); }
+.sheet-go svg, .sheet-share svg { width: 16px; height: 16px; flex: none; }
 .sheet-about { margin-top: 24px; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
 .sheet-desc { margin-top: 8px; font-size: 15px; line-height: 1.6; color: var(--mut); text-wrap: pretty; }
 .sheet-desc p + p { margin-top: 10px; }
@@ -652,7 +654,10 @@ body.sheet-lock { overflow: hidden; }
       <h2 class="sheet-title" id="sheet-title"></h2>
       <p class="sheet-sub" id="sheet-sub"></p>
     </div>
-    <a class="sheet-go" id="sheet-go" href="#" target="_blank" rel="noopener">Kunjungi <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <div class="sheet-actions">
+      <a class="sheet-go" id="sheet-go" href="#" target="_blank" rel="noopener">Kunjungi <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="sheet-share" id="sheet-donate" href="/donasi/">Dukung <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-8-4.9-8-11A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 8 2.5c0 6.1-8 11-8 11Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
     <h3 class="sheet-about">Tentang</h3>
     <div class="sheet-desc" id="sheet-desc"></div>
     </div>
@@ -712,6 +717,12 @@ body.sheet-lock { overflow: hidden; }
     else { var q = document.createElement('p'); q.textContent = btn.getAttribute('data-desc'); d.appendChild(q); }
     sheet.querySelector('.sheet-body').scrollTop = 0;
     document.getElementById('sheet-go').href = a.href;
+    // Auto pesan donasi: nama proyek + deskripsi, maks 200 karakter (sesuai batas kolom pesan)
+    var dn = document.getElementById('sheet-title').textContent,
+        dd = (btn.getAttribute('data-desc') || '').trim(),
+        pesan = ('Dukungan untuk ' + dn + (dd ? ' — ' + dd : ''));
+    if (pesan.length > 200) pesan = pesan.slice(0, 197).replace(/\s+\S*$/, '') + '...';
+    document.getElementById('sheet-donate').href = '/donasi/?pesan=' + encodeURIComponent(pesan);
     document.getElementById('sheet-sub').textContent = new URL(a.href).hostname;
     var lg = document.getElementById('sheet-logo');
     lg.textContent = '';
