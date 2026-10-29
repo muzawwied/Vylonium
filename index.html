@@ -787,4 +787,87 @@ body.sheet-lock { overflow: hidden; }
   show(fromPath(), false);
 })();
 </script>
+<script>
+/* Data dinamis dari Workers (diatur lewat panel admin).
+   Isi HTML di atas tetap jadi cadangan: kalau server gagal atau datanya kosong, tampilan lama tidak berubah. */
+(function () {
+  var ENDPOINT = 'https://app.vylonium.my.id/content'; // endpoint publik (GET, tanpa token) di Workers
+  function ok(u) { return /^(https?:\/\/|\/)/i.test(String(u || '')); }
+  function key(u) { return String(u || '').replace(/\/+$/, ''); }
+  function byOrder(a) { return (Array.isArray(a) ? a : []).slice().sort(function (x, y) { return (Number(x.order) || 0) - (Number(y.order) || 0); }); }
+  function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+  function index(root, sel) { var m = {}; Array.prototype.forEach.call(root.querySelectorAll(sel), function (n) { m[key(n.getAttribute('href'))] = n; }); return m; }
+
+  function applyLinks(list) {
+    var box = document.querySelector('#panel-proyek .pills'); if (!box) return;
+    var items = byOrder(list).filter(function (x) { return x && x.title && ok(x.url); });
+    if (!items.length) return;
+    var old = index(box, 'a.pill');
+    box.textContent = '';
+    items.forEach(function (it) {
+      var a = old[key(it.url)], row;
+      if (a) { row = a.closest('.pill-row'); a.querySelector('.pill-t').textContent = it.title; }
+      else {
+        row = el('div', 'pill-row');
+        a = el('a', 'pill'); a.href = it.url; a.target = '_blank'; a.rel = 'noopener';
+        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', 'logo'); svg.setAttribute('viewBox', '0 0 32 32'); svg.setAttribute('aria-hidden', 'true');
+        var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        c.setAttribute('cx', '16'); c.setAttribute('cy', '16'); c.setAttribute('r', '16'); c.setAttribute('fill', '#ffffff');
+        var t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        t.setAttribute('x', '16'); t.setAttribute('y', '22'); t.setAttribute('text-anchor', 'middle');
+        t.setAttribute('font-size', '17'); t.setAttribute('font-weight', '800'); t.setAttribute('fill', '#000000');
+        t.setAttribute('font-family', 'Montserrat,sans-serif'); t.textContent = it.title.charAt(0).toUpperCase();
+        svg.appendChild(c); svg.appendChild(t);
+        a.appendChild(svg); a.appendChild(el('span', 'pill-t', it.title)); row.appendChild(a);
+      }
+      box.appendChild(row);
+    });
+  }
+
+  function applyPortfolio(list) {
+    var box = document.querySelector('#panel-karya .gallery'); if (!box) return;
+    var items = byOrder(list).filter(function (x) { return x && x.title && ok(x.url); });
+    if (!items.length) return;
+    var old = index(box, 'a.shot');
+    var cta = box.querySelector('.shot-cta');
+    var ctaHtml = cta ? cta.innerHTML : 'Kunjungi';
+    box.textContent = '';
+    items.forEach(function (it) {
+      var a = old[key(it.url)];
+      if (a) {
+        a.querySelector('.shot-name').textContent = it.title;
+        a.setAttribute('aria-label', 'Kunjungi ' + it.title);
+        var im = a.querySelector('img'); if (im && ok(it.image)) im.src = it.image;
+      } else {
+        a = el('a', 'shot'); a.href = it.url; a.target = '_blank'; a.rel = 'noopener'; a.setAttribute('aria-label', 'Kunjungi ' + it.title);
+        if (ok(it.image)) {
+          var img = el('img'); img.src = it.image; img.alt = it.title; img.width = 1280; img.height = 720; img.loading = 'lazy'; a.appendChild(img);
+        }
+        a.appendChild(el('span', 'shot-name', it.title));
+        var c = el('span', 'shot-cta'); c.innerHTML = ctaHtml; a.appendChild(c);
+      }
+      box.appendChild(a);
+    });
+  }
+
+  function applySettings(s) {
+    if (!s) return;
+    var h = document.querySelector('.profile h1');
+    if (h && s.title) { var n = h.firstChild; if (n && n.nodeType === 3) n.nodeValue = s.title; else h.insertBefore(document.createTextNode(s.title), h.firstChild); }
+    var b = document.querySelector('.profile .bio'); if (b && s.bio) b.textContent = s.bio;
+    if (s.theme === 'light' || s.theme === 'dark') document.documentElement.setAttribute('data-theme', s.theme);
+  }
+
+  fetch(ENDPOINT, { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+    .then(function (d) {
+      if (!d) return;
+      applySettings(d.settings);
+      applyLinks(d.links);
+      applyPortfolio(d.portfolio);
+    })
+    .catch(function () { /* diam: tampilan bawaan tetap dipakai */ });
+})();
+</script>
 </body></html>
