@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Admin — Vylonium</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e0e10">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800&display=swap">
+<style>
+:root{
+  --bg:#ffffff;--fg:#111111;--mut:#71717a;--card:#f4f4f5;--card2:#ececee;--line:#e5e7eb;--hov:#f4f4f6;
+  --tile:#f1f1f4;--ok:#16a34a;--err:#dc2626;
+  --pill-sh-h:0 2px 4px rgba(17,17,24,.06),0 10px 24px rgba(17,17,24,.10);
+  --font-display:"Montserrat",system-ui,sans-serif;--font-body:"Inter",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e0e10;--fg:#f2f2f4;--mut:#8d8d96;--card:#202025;--card2:#2a2a30;--line:#2e2e34;--hov:#222227;
+    --tile:#2a2a31;--ok:#4ade80;--err:#f87171;
+    --pill-sh-h:0 2px 4px rgba(0,0,0,.5),0 10px 24px rgba(0,0,0,.45);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e0e10;--fg:#f2f2f4;--mut:#8d8d96;--card:#202025;--card2:#2a2a30;--line:#2e2e34;--hov:#222227;
+  --tile:#2a2a31;--ok:#4ade80;--err:#f87171;
+  --pill-sh-h:0 2px 4px rgba(0,0,0,.5),0 10px 24px rgba(0,0,0,.45);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.5;
+  -webkit-tap-highlight-color:transparent;min-height:100%;
+  padding-block:calc(40px + env(safe-area-inset-top,0px)) calc(48px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+.input:focus-visible{outline:none}
+[hidden]{display:none!important}
+main{max-width:720px;margin:0 auto;animation:vin .22s cubic-bezier(.2,.7,.2,1)}
+@keyframes vin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.top{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.avatar{width:72px;height:72px;margin-bottom:6px}
+.avatar svg{width:100%;height:100%;display:block}
+h1{font-family:var(--font-display);font-weight:800;font-size:26px;line-height:1.15;letter-spacing:-.03em}
+.sub{font-size:14px;color:var(--mut);max-width:42ch;text-wrap:pretty}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:9999px;background:var(--tile);font-size:12px;font-weight:600;color:var(--mut)}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--mut)}
+.chip.ok{color:var(--fg)}.chip.ok::before{background:var(--ok)}
+.chip.warn{color:var(--fg)}.chip.warn::before{background:#f59e0b}
+
+.tabs{display:flex;margin-top:24px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:1 0 auto;min-height:44px;padding:12px 14px;margin-bottom:-1px;background:none;border:0;border-bottom:2px solid transparent;font:inherit;font-size:15px;font-weight:500;color:var(--mut);cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s}
+.tab[aria-selected="true"]{color:var(--fg);font-weight:600;border-bottom-color:var(--fg)}
+@media (hover:hover){.tab:hover{color:var(--fg)}}
+
+.label{margin:28px 0 10px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.hint{margin-top:6px;font-size:13px;color:var(--mut);text-wrap:pretty}
+.field{display:block;margin-top:12px}
+.field>span{display:block;margin-bottom:6px;font-size:13px;color:var(--mut)}
+.input{width:100%;min-height:52px;padding:12px 18px;border:1px solid var(--line);border-radius:18px;background:var(--tile);color:var(--fg);font:inherit;font-size:16px;transition:border-color .15s}
+.input::placeholder{color:var(--mut)}
+.input:focus{border-color:var(--fg)}
+textarea.input{min-height:96px;resize:vertical;line-height:1.5}
+textarea.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;min-height:160px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){.grid2{grid-template-columns:1fr}}
+
+.item{margin-top:12px;padding:16px;background:var(--card);border-radius:22px}
+.item-h{display:flex;align-items:center;gap:10px}
+.item-h b{flex:1;min-width:0;font-size:15px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tools{display:flex;gap:4px}
+.ib{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border:0;border-radius:50%;background:transparent;color:var(--fg);cursor:pointer;transition:background-color .15s,transform .12s}
+.ib svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media (hover:hover){.ib:hover{background:var(--card2)}}
+.ib:active{transform:scale(.92)}
+.ib.danger{color:var(--err)}
+.ib:disabled{opacity:.3;cursor:default}
+.thumb{width:100%;aspect-ratio:16/9;margin-top:12px;border-radius:14px;overflow:hidden;background:var(--tile);border:1px solid var(--line)}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+details{margin-top:12px}
+summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--mut);padding:6px 0;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:" ▾"}
+details[open] summary::after{content:" ▴"}
+
+.go{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:54px;margin-top:14px;border:0;border-radius:9999px;background:var(--fg);color:var(--bg);font:inherit;font-weight:600;font-size:16px;cursor:pointer;transition:transform .12s,opacity .15s}
+.go:active{transform:scale(.98)}
+.go.ghost{background:var(--tile);color:var(--fg)}
+.go.sm{min-height:46px;font-size:15px}
+.go:disabled{opacity:.5;cursor:default}
+@media (hover:hover){.go:not(:disabled):hover{opacity:.88}}
+.row{display:flex;gap:10px}.row>*{flex:1 1 0;min-width:0}
+@media (max-width:520px){.row.wrap{flex-direction:column;gap:0}}
+
+.amts{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.amt{display:flex;align-items:center;gap:2px;padding:0 4px 0 16px;border-radius:9999px;background:var(--tile)}
+.amt input{width:90px;min-height:42px;border:0;background:transparent;color:var(--fg);font:inherit;font-size:15px;font-weight:500;font-variant-numeric:tabular-nums}
+.amt .ib{width:34px;height:34px}
+
+.empty{margin-top:24px;padding:28px 20px;border-radius:22px;background:var(--card);text-align:center}
+.empty h2{font-family:var(--font-display);font-weight:800;font-size:20px;letter-spacing:-.02em}
+.empty p{margin-top:6px;font-size:14px;color:var(--mut)}
+.steps{list-style:none;padding:0;counter-reset:st;display:grid;gap:12px;margin-top:10px}
+.steps li{position:relative;padding-left:36px;counter-increment:st;font-size:14px;color:var(--mut)}
+.steps li::before{content:counter(st);position:absolute;left:0;top:0;width:24px;height:24px;border-radius:50%;background:var(--fg);color:var(--bg);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.steps strong{color:var(--fg);font-weight:600}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);padding:12px 20px;border-radius:9999px;background:var(--fg);color:var(--bg);font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:50;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+footer{margin-top:40px;text-align:center;font-size:12px;color:var(--mut)}
+@media (prefers-reduced-motion:reduce){main{animation:none}.ib,.go,.toast{transition:none}}
+</style>
+</head>
+<body>
+<main>
+  <header class="top">
+    <div class="avatar">
+      <svg viewBox="0 0 96 96" role="img" aria-label="Logo Vylonium">
+        <circle cx="48" cy="48" r="48" fill="var(--fg)"/>
+        <rect x="-6.5" y="-24" width="13" height="48" rx="6.5" fill="var(--bg)" transform="translate(38.5 48) rotate(-22)"/>
+        <rect x="-6.5" y="-24" width="13" height="48" rx="6.5" fill="var(--bg)" fill-opacity=".55" transform="translate(57.5 48) rotate(22)"/>
+      </svg>
+    </div>
+    <h1>Panel Admin</h1>
+    <p class="sub">Atur profil, proyek, karya, dan donasi, lalu unduh file hasilnya.</p>
+    <div class="chips" id="chips"></div>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="Menu admin" id="tabs"></div>
+  <div id="app" role="tabpanel"></div>
+
+  <footer>&copy; 2026 Vylonium. Seluruh hak cipta dilindungi.</footer>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<input type="file" id="f-idx" accept=".html,text/html" hidden>
+<input type="file" id="f-don" accept=".html,text/html" hidden>
+<input type="file" id="f-json" accept=".json,application/json" hidden>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var KEY = 'vylonium-admin-draft-v1';
+  var TABS = [['profil','Profil'],['proyek','Proyek'],['karya','Karya'],['donasi','Donasi'],['seo','SEO'],['ekspor','Ekspor']];
+  var ICON = {
+    up: '<svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg>',
+    down: '<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>',
+    del: '<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>',
+    plus: '<svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round"><path d="M12 5v14M5 12h14"/></svg>',
+    x: '<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+  };
+
+  var S = { srcIdx: '', srcDon: '', idx: null, don: null, ext: { infoSvg: '', ctaSvg: '' }, tab: 'profil', base: '', hasDraft: false };
+
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function fmt(n) { return Number(n).toLocaleString('id-ID'); }
+  function digits(s) { return String(s).replace(/\D/g, ''); }
+  function slug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'item'; }
+  function toast(m) { var t = $('toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { t.classList.remove('on'); }, 2200); }
+  function parseHTML(t) { return new DOMParser().parseFromString(t, 'text/html'); }
+  function meta(doc, sel) { var e = doc.querySelector(sel); return e ? (e.getAttribute('content') || e.getAttribute('href') || '') : ''; }
+
+  /* ---------- Parse ---------- */
+  function parseIndex(text) {
+    var doc = parseHTML(text);
+    var h1 = doc.querySelector('.profile h1');
+    var name = '';
+    if (h1) for (var n = h1.firstChild; n; n = n.nextSibling) if (n.nodeType === 3 && n.textContent.trim()) { name = n.textContent.trim(); break; }
+    var firstInfo = doc.querySelector('.info-btn');
+    var firstCta = doc.querySelector('.shot-cta svg');
+    S.ext.infoSvg = firstInfo ? firstInfo.innerHTML : S.ext.infoSvg;
+    S.ext.ctaSvg = firstCta ? firstCta.outerHTML : S.ext.ctaSvg;
+    var foot = doc.querySelector('footer');
+    return {
+      name: name,
+      handle: (doc.querySelector('.handle') || {}).textContent || '',
+      bio: (doc.querySelector('.profile .bio') || {}).textContent || '',
+      footer: foot ? foot.textContent.trim() : '',
+      socials: [].map.call(doc.querySelectorAll('.socials a.ib'), function (a) { return { label: a.getAttribute('aria-label') || '', href: a.getAttribute('href') || '' }; }),
+      projects: [].map.call(doc.querySelectorAll('#panel-proyek .pill-row'), function (r) {
+        var a = r.querySelector('a.pill'), b = r.querySelector('.info-btn'), lg = r.querySelector('svg.logo');
+        var tpl = b && b.getAttribute('data-about') ? doc.getElementById(b.getAttribute('data-about')) : null;
+        return {
+          name: (r.querySelector('.pill-t') || {}).textContent || '',
+          url: a ? a.getAttribute('href') : '',
+          desc: b ? (b.getAttribute('data-desc') || '') : '',
+          about: tpl ? tpl.innerHTML.trim() : '',
+          logo: lg ? lg.outerHTML : ''
+        };
+      }),
+      karya: [].map.call(doc.querySelectorAll('#panel-karya a.shot'), function (a) {
+        var im = a.querySelector('img');
+        return { name: (a.querySelector('.shot-name') || {}).textContent || '', url: a.getAttribute('href') || '', img: im ? im.getAttribute('src') : '', alt: im ? (im.getAttribute('alt') || '') : '' };
+      }),
+      meta: {
+        title: doc.title || '',
+        description: meta(doc, 'meta[name="description"]'),
+        canonical: meta(doc, 'link[rel="canonical"]'),
+        ogTitle: meta(doc, 'meta[property="og:title"]'),
+        ogDesc: meta(doc, 'meta[property="og:description"]'),
+        ogImage: meta(doc, 'meta[property="og:image"]')
+      }
+    };
+  }
+
+  function parseDon(text) {
+    var doc = parseHTML(text), sc = '';
+    [].forEach.call(doc.querySelectorAll('script:not([src])'), function (s) { if (/var API/.test(s.textContent)) sc = s.textContent; });
+    var api = (sc.match(/var API = '([^']*)'/) || [])[1] || '';
+    var def = (sc.match(/amountEl\.value = '([^']*)'/) || [])[1] || '10.000';
+    var min = (sc.match(/Number\(d\) < (\d+)/) || [])[1] || '1000';
+    return {
+      pageTitle: doc.title || '',
+      pageDesc: meta(doc, 'meta[name="description"]'),
+      title: (doc.querySelector('.profile h1') || {}).textContent || '',
+      bio: (doc.querySelector('.profile .bio') || {}).textContent || '',
+      amounts: [].map.call(doc.querySelectorAll('#amounts .amt'), function (b) { return Number(b.getAttribute('data-v')); }),
+      def: Number(digits(def)) || 10000,
+      min: Number(min),
+      api: api,
+      note: (doc.querySelector('.method') || {}).textContent || ''
+    };
+  }
+
+  /* ---------- Apply / export ---------- */
+  function mk(doc, tag, attrs, html) {
+    var e = doc.createElement(tag);
+    for (var k in attrs) if (attrs[k] != null) e.setAttribute(k, attrs[k]);
+    if (html != null) e.innerHTML = html;
+    return e;
+  }
+  function setMeta(doc, sel, val) { var e = doc.querySelector(sel); if (!e) return; if (e.tagName === 'LINK') e.setAttribute('href', val); else e.setAttribute('content', val); }
+
+  function exportIndex() {
+    var d = S.idx, doc = parseHTML(S.srcIdx), i;
+    var h1 = doc.querySelector('.profile h1');
+    if (h1) { for (var n = h1.firstChild; n; n = n.nextSibling) if (n.nodeType === 3 && n.textContent.trim()) { n.textContent = d.name; break; } }
+    var set = function (sel, v) { var e = doc.querySelector(sel); if (e) e.textContent = v; };
+    set('.handle', d.handle); set('.profile .bio', d.bio); set('footer', d.footer);
+    var soc = doc.querySelectorAll('.socials a.ib');
+    d.socials.forEach(function (s, k) { if (soc[k]) soc[k].setAttribute('href', s.href); });
+
+    var pills = doc.querySelector('#panel-proyek .pills');
+    pills.textContent = '';
+    [].forEach.call(doc.querySelectorAll('template[id^="about-"]'), function (t) { t.remove(); });
+    var sheet = doc.getElementById('sheet');
+    d.projects.forEach(function (p, k) {
+      var id = 'about-' + slug(p.name) + '-' + (k + 1);
+      var row = mk(doc, 'div', { 'class': 'pill-row' });
+      var a = mk(doc, 'a', { 'class': 'pill', href: p.url, target: '_blank', rel: 'noopener' });
+      var tmp = mk(doc, 'div', {}, p.logo || logoFor(p.name));
+      if (tmp.firstElementChild) a.appendChild(tmp.firstElementChild);
+      var t = mk(doc, 'span', { 'class': 'pill-t' }); t.textContent = p.name; a.appendChild(t);
+      var b = mk(doc, 'button', { 'class': 'info-btn', type: 'button', 'data-desc': p.desc, 'aria-label': 'Info tentang ' + p.name, 'aria-haspopup': 'dialog' }, S.ext.infoSvg);
+      if (p.about.trim()) {
+        b.setAttribute('data-about', id);
+        var tpl = mk(doc, 'template', { id: id }, p.about);
+        sheet.parentNode.insertBefore(tpl, sheet);
+      }
+      row.appendChild(a); row.appendChild(b); pills.appendChild(row);
+    });
+
+    var gal = doc.querySelector('#panel-karya .gallery');
+    gal.textContent = '';
+    d.karya.forEach(function (k) {
+      var a = mk(doc, 'a', { 'class': 'shot', href: k.url, target: '_blank', rel: 'noopener', 'aria-label': 'Kunjungi ' + k.name });
+      a.appendChild(mk(doc, 'img', { src: k.img, alt: k.alt, width: '1280', height: '720', loading: 'lazy' }));
+      var nm = mk(doc, 'span', { 'class': 'shot-name' }); nm.textContent = k.name; a.appendChild(nm);
+      a.appendChild(mk(doc, 'span', { 'class': 'shot-cta' }, 'Kunjungi ' + S.ext.ctaSvg));
+      gal.appendChild(a);
+    });
+
+    var m = d.meta;
+    if (m.title) doc.title = m.title;
+    setMeta(doc, 'meta[name="description"]', m.description);
+    setMeta(doc, 'link[rel="canonical"]', m.canonical);
+    setMeta(doc, 'meta[property="og:url"]', m.canonical);
+    setMeta(doc, 'meta[property="og:title"]', m.ogTitle); setMeta(doc, 'meta[name="twitter:title"]', m.ogTitle);
+    setMeta(doc, 'meta[property="og:description"]', m.ogDesc); setMeta(doc, 'meta[name="twitter:description"]', m.ogDesc);
+    setMeta(doc, 'meta[property="og:image"]', m.ogImage); setMeta(doc, 'meta[name="twitter:image"]', m.ogImage);
+    return '<!doctype html>\n' + doc.documentElement.outerHTML;
+  }
+
+  function exportDon() {
+    var d = S.don, doc = parseHTML(S.srcDon);
+    if (d.pageTitle) doc.title = d.pageTitle;
+    setMeta(doc, 'meta[name="description"]', d.pageDesc);
+    var set = function (sel, v) { var e = doc.querySelector(sel); if (e) e.textContent = v; };
+    set('.profile h1', d.title); set('.profile .bio', d.bio); set('.method', d.note);
+    set('#min-hint', 'Minimal donasi Rp' + fmt(d.min));
+    var box = doc.getElementById('amounts');
+    box.textContent = '';
+    d.amounts.forEach(function (v) {
+      var b = mk(doc, 'button', { 'class': 'amt', type: 'button', 'data-v': String(v) });
+      if (v === Number(d.def)) b.setAttribute('aria-pressed', 'true');
+      b.textContent = fmt(v); box.appendChild(b);
+    });
+    var inp = doc.getElementById('amount');
+    if (inp) inp.setAttribute('placeholder', fmt(d.def));
+    [].forEach.call(doc.querySelectorAll('script:not([src])'), function (s) {
+      var t = s.textContent;
+      if (!/var API/.test(t)) return;
+      t = t.replace(/var API = '[^']*';/, "var API = '" + d.api.replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "';")
+           .replace(/amountEl\.value = '[^']*';/, "amountEl.value = '" + fmt(d.def) + "';")
+           .replace(/< 1000/g, '< ' + d.min)
+           .replace(/Minimal donasi Rp1\.000/g, 'Minimal donasi Rp' + fmt(d.min));
+      s.textContent = t;
+    });
+    return '<!doctype html>\n' + doc.documentElement.outerHTML;
+  }
+
+  function logoFor(name) {
+    var c = (name || '?').trim().charAt(0).toUpperCase();
+    return '<svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#ffffff"/><text x="16" y="22" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="800" font-size="17" fill="#000000">' + esc(c) + '</text></svg>';
+  }
+
+  /* ---------- State helpers ---------- */
+  function ref(path) { var p = path.split('.'), o = S; for (var i = 0; i < p.length - 1; i++) o = o[p[i]]; return [o, p[p.length - 1]]; }
+  function getv(path) { var r = ref(path); return r[0][r[1]]; }
+  function setv(path, v) { var r = ref(path); r[0][r[1]] = v; }
+  function snap() { return JSON.stringify({ idx: S.idx, don: S.don }); }
+  var baseline = '';
+  function dirty() { return baseline !== snap(); }
+  function saveDraft() { try { localStorage.setItem(KEY, JSON.stringify({ idx: S.idx, don: S.don, ext: S.ext })); } catch (e) {} chips(); }
+
+  /* ---------- Loading ---------- */
+  async function tryFetch(urls, needle) {
+    for (var i = 0; i < urls.length; i++) {
+      try { var r = await fetch(urls[i], { cache: 'no-store' }); if (r.ok) { var t = await r.text(); if (t.indexOf(needle) > -1) return t; } } catch (e) {}
+    }
+    return null;
+  }
+  function applyDraft() {
+    try {
+      var raw = localStorage.getItem(KEY); if (!raw) return;
+      var d = JSON.parse(raw);
+      if (d.idx && S.idx) S.idx = d.idx;
+      if (d.don && S.don) S.don = d.don;
+      if (d.ext && d.ext.infoSvg) S.ext = d.ext;
+      S.hasDraft = true;
+    } catch (e) {}
+  }
+  function loadIdx(text) { S.srcIdx = text; S.idx = parseIndex(text); }
+  function loadDon(text) { S.srcDon = text; S.don = parseDon(text); }
+  async function boot() {
+    chips(); render();
+    var a = await tryFetch(['/index.html', '/'], 'id="panel-proyek"');
+    var b = await tryFetch(['/donasi/index.html', '/donasi/', '/donasi.html'], 'id="v-form"');
+    var fresh = {};
+    if (a) { loadIdx(a); fresh.idx = S.idx; }
+    if (b) { loadDon(b); fresh.don = S.don; }
+    baseline = JSON.stringify({ idx: S.idx, don: S.don });
+    applyDraft();
+    chips(); render();
+  }
+  function readFile(input, cb) {
+    input.addEventListener('change', function () {
+      var f = input.files[0]; if (!f) return;
+      var r = new FileReader();
+      r.onload = function () { cb(String(r.result)); input.value = ''; };
+      r.readAsText(f);
+    });
+  }
+  readFile($('f-idx'), function (t) {
+    if (t.indexOf('id="panel-proyek"') < 0) { toast('Ini bukan index.html Vylonium'); return; }
+    loadIdx(t); baseline = snap(); applyDraft(); saveDraft(); render(); toast('index.html dimuat');
+  });
+  readFile($('f-don'), function (t) {
+    if (t.indexOf('id="v-form"') < 0) { toast('Ini bukan donasi.html Vylonium'); return; }
+    loadDon(t); baseline = snap(); applyDraft(); saveDraft(); render(); toast('donasi.html dimuat');
+  });
+  readFile($('f-json'), function (t) {
+    try { var d = JSON.parse(t); if (d.idx) S.idx = d.idx; if (d.don) S.don = d.don; if (d.ext) S.ext = d.ext; saveDraft(); render(); toast('Data diimpor'); }
+    catch (e) { toast('File JSON tidak valid'); }
+  });
+
+  /* ---------- Render ---------- */
+  function chips() {
+    var c = [];
+    c.push('<span class="chip ' + (S.idx ? 'ok' : 'warn') + '">index.html ' + (S.idx ? 'dimuat' : 'belum dimuat') + '</span>');
+    c.push('<span class="chip ' + (S.don ? 'ok' : 'warn') + '">donasi.html ' + (S.don ? 'dimuat' : 'belum dimuat') + '</span>');
+    if (S.idx || S.don) c.push('<span class="chip ' + (dirty() ? 'warn' : 'ok') + '">' + (dirty() ? 'Ada perubahan' : 'Tanpa perubahan') + '</span>');
+    $('chips').innerHTML = c.join('');
+  }
+  function tabsHtml() {
+    $('tabs').innerHTML = TABS.map(function (t) {
+      return '<button class="tab" role="tab" type="button" data-tab="' + t[0] + '" aria-selected="' + (S.tab === t[0]) + '">' + t[1] + '</button>';
+    }).join('');
+  }
+  function field(label, path, o) {
+    o = o || {};
+    var v = getv(path), cls = 'input' + (o.code ? ' code' : '');
+    var inner = o.rows
+      ? '<textarea class="' + cls + '" data-path="' + path + '" rows="' + o.rows + '" placeholder="' + esc(o.ph || '') + '" spellcheck="false">' + esc(v) + '</textarea>'
+      : '<input class="' + cls + '" data-path="' + path + '"' + (o.num ? ' data-num="1" inputmode="numeric"' : '') + ' value="' + esc(o.num ? fmt(v) : v) + '" placeholder="' + esc(o.ph || '') + '" autocomplete="off">';
+    return '<label class="field"><span>' + label + '</span>' + inner + '</label>' + (o.hint ? '<p class="hint">' + o.hint + '</p>' : '');
+  }
+  function tools(list, i, len) {
+    return '<div class="tools">' +
+      '<button class="ib" type="button" data-act="up" data-list="' + list + '" data-i="' + i + '" aria-label="Naik"' + (i === 0 ? ' disabled' : '') + '>' + ICON.up + '</button>' +
+      '<button class="ib" type="button" data-act="down" data-list="' + list + '" data-i="' + i + '" aria-label="Turun"' + (i === len - 1 ? ' disabled' : '') + '>' + ICON.down + '</button>' +
+      '<button class="ib danger" type="button" data-act="del" data-list="' + list + '" data-i="' + i + '" aria-label="Hapus">' + ICON.del + '</button></div>';
+  }
+  function loader(kind) {
+    var isIdx = kind === 'idx';
+    return '<div class="empty"><h2>Muat ' + (isIdx ? 'index.html' : 'donasi.html') + '</h2>' +
+      '<p>Panel tidak menemukan file ini secara otomatis. Pilih file dari komputermu, isinya akan dibaca di browser saja.</p>' +
+      '<button class="go" type="button" data-act="pick-' + kind + '">Pilih ' + (isIdx ? 'index.html' : 'donasi.html') + '</button></div>';
+  }
+
+  var views = {
+    profil: function () {
+      if (!S.idx) return loader('idx');
+      var h = '<p class="label">Profil</p>' +
+        field('Nama', 'idx.name') + field('Handle', 'idx.handle', { ph: '@nama' }) + field('Bio', 'idx.bio', { rows: 3 }) +
+        field('Teks footer', 'idx.footer');
+      h += '<p class="label">Media sosial</p>';
+      S.idx.socials.forEach(function (s, i) {
+        h += field(esc(s.label), 'idx.socials.' + i + '.href', { ph: 'https://' });
+      });
+      h += '<p class="hint">Ikon sosial tidak berubah, hanya tautannya. Untuk WhatsApp pakai format https://wa.me/62xxxxxxxxxx.</p>';
+      return h;
+    },
+    proyek: function () {
+      if (!S.idx) return loader('idx');
+      var h = '<p class="label">Daftar proyek (' + S.idx.projects.length + ')</p>';
+      S.idx.projects.forEach(function (p, i) {
+        var pre = 'idx.projects.' + i;
+        h += '<div class="item"><div class="item-h"><b>' + (i + 1) + '. ' + esc(p.name || 'Tanpa nama') + '</b>' + tools('projects', i, S.idx.projects.length) + '</div>' +
+          field('Nama', pre + '.name') + field('Tautan', pre + '.url', { ph: 'https://' }) +
+          field('Deskripsi singkat', pre + '.desc', { rows: 2, hint: 'Dipakai juga sebagai pesan otomatis di halaman donasi.' }) +
+          '<details><summary>Konten halaman &ldquo;Tentang&rdquo; (HTML)</summary>' +
+          field('HTML', pre + '.about', { rows: 10, code: true, hint: 'Kosongkan jika hanya ingin memakai deskripsi singkat.' }) + '</details>' +
+          '<details><summary>Logo (kode SVG)</summary>' +
+          field('SVG', pre + '.logo', { rows: 6, code: true, hint: 'Harus diawali &lt;svg class=&quot;logo&quot; ... &gt;. Kosongkan untuk logo huruf otomatis.' }) + '</details></div>';
+      });
+      return h + '<button class="go ghost sm" type="button" data-act="add-project">' + ICON.plus + ' Tambah proyek</button>';
+    },
+    karya: function () {
+      if (!S.idx) return loader('idx');
+      var h = '<p class="label">Galeri karya (' + S.idx.karya.length + ')</p>';
+      S.idx.karya.forEach(function (k, i) {
+        var pre = 'idx.karya.' + i;
+        h += '<div class="item"><div class="item-h"><b>' + (i + 1) + '. ' + esc(k.name || 'Tanpa nama') + '</b>' + tools('karya', i, S.idx.karya.length) + '</div>' +
+          (k.img ? '<div class="thumb"><img src="' + esc(k.img) + '" alt="" onerror="this.style.display=\'none\'"></div>' : '') +
+          field('Nama', pre + '.name') + field('Tautan', pre + '.url', { ph: 'https://' }) +
+          field('Gambar', pre + '.img', { ph: '/img/nama.webp', hint: 'Pratinjau tampil bila panel dibuka dari situs yang sama.' }) +
+          field('Teks alternatif', pre + '.alt') + '</div>';
+      });
+      return h + '<button class="go ghost sm" type="button" data-act="add-karya">' + ICON.plus + ' Tambah karya</button>';
+    },
+    donasi: function () {
+      if (!S.don) return loader('don');
+      var h = '<p class="label">Teks halaman</p>' + field('Judul', 'don.title') + field('Bio', 'don.bio', { rows: 3 }) + field('Catatan metode bayar', 'don.note', { rows: 2 });
+      h += '<p class="label">Nominal cepat</p><div class="amts">';
+      S.don.amounts.forEach(function (v, i) {
+        h += '<div class="amt"><span style="color:var(--mut);font-size:13px">Rp</span><input data-path="don.amounts.' + i + '" data-num="1" inputmode="numeric" value="' + esc(fmt(v)) + '" aria-label="Nominal ' + (i + 1) + '">' +
+          '<button class="ib" type="button" data-act="del" data-list="amounts" data-i="' + i + '" aria-label="Hapus">' + ICON.x + '</button></div>';
+      });
+      h += '</div><button class="go ghost sm" type="button" data-act="add-amount" style="width:auto;padding:0 20px">' + ICON.plus + ' Tambah nominal</button>';
+      h += '<div class="grid2">' + field('Nominal terpilih awal', 'don.def', { num: true }) + field('Minimal donasi', 'don.min', { num: true }) + '</div>';
+      h += '<p class="label">Teknis</p>' + field('Alamat API pembayaran', 'don.api', { ph: 'https://' }) +
+        '<p class="hint">Ubah hanya jika server pembayaran pindah. Salah isi membuat donasi gagal.</p>';
+      h += '<p class="label">Meta halaman</p>' + field('Judul tab', 'don.pageTitle') + field('Deskripsi', 'don.pageDesc', { rows: 2 });
+      return h;
+    },
+    seo: function () {
+      if (!S.idx) return loader('idx');
+      return '<p class="label">Meta &amp; berbagi</p>' + field('Judul tab', 'idx.meta.title') + field('Deskripsi', 'idx.meta.description', { rows: 3 }) +
+        field('URL kanonik', 'idx.meta.canonical', { ph: 'https://' }) + field('Judul saat dibagikan', 'idx.meta.ogTitle') +
+        field('Deskripsi saat dibagikan', 'idx.meta.ogDesc', { rows: 2 }) + field('Gambar pratinjau (OG)', 'idx.meta.ogImage', { ph: 'https://' });
+    },
+    ekspor: function () {
+      var h = '<p class="label">Sumber file</p><div class="row wrap">' +
+        '<button class="go ghost sm" type="button" data-act="pick-idx">Muat index.html</button>' +
+        '<button class="go ghost sm" type="button" data-act="pick-don">Muat donasi.html</button></div>';
+      h += '<p class="label">Unduh hasil</p>' +
+        '<button class="go" type="button" data-act="dl-idx"' + (S.idx ? '' : ' disabled') + '>Unduh index.html</button>' +
+        '<button class="go" type="button" data-act="dl-don"' + (S.don ? '' : ' disabled') + '>Unduh donasi.html</button>' +
+        '<div class="row wrap"><button class="go ghost sm" type="button" data-act="dl-json">Cadangan data (.json)</button>' +
+        '<button class="go ghost sm" type="button" data-act="pick-json">Impor data (.json)</button></div>' +
+        '<button class="go ghost sm" type="button" data-act="reset">Buang perubahan &amp; muat ulang dari file</button>';
+      h += '<p class="label">Cara menerapkan</p><ol class="steps">' +
+        '<li><strong>Edit</strong> di tab-tab di atas. Perubahan tersimpan otomatis sebagai draf di browser ini.</li>' +
+        '<li><strong>Unduh</strong> index.html dan/atau donasi.html.</li>' +
+        '<li><strong>Timpa</strong> file lama di server atau repo dengan file hasil unduhan, lalu deploy.</li>' +
+        '<li>Jika mengganti gambar dengan nama yang sama, naikkan angka <strong>?v=</strong> di path gambar agar cache diperbarui.</li></ol>';
+      h += '<p class="label">Keamanan</p><p class="hint">Panel ini berjalan sepenuhnya di browser dan tidak punya login. Jangan taruh di server publik tanpa proteksi (misalnya basic auth atau Cloudflare Access), atau simpan saja di komputermu dan buka secara lokal. Halaman ini sudah diberi noindex.</p>';
+      return h;
+    }
+  };
+
+  function render() { tabsHtml(); $('app').innerHTML = views[S.tab](); chips(); }
+
+  /* ---------- Events ---------- */
+  var timer;
+  $('app').addEventListener('input', function (e) {
+    var el = e.target, p = el.getAttribute('data-path'); if (!p) return;
+    if (el.hasAttribute('data-num')) {
+      var d = digits(el.value); setv(p, d ? Number(d) : 0);
+      var pos = el.selectionStart; el.value = d ? fmt(d) : '';
+    } else setv(p, el.value);
+    clearTimeout(timer); timer = setTimeout(saveDraft, 250); chips();
+  });
+  $('tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-tab]'); if (!b) return;
+    S.tab = b.getAttribute('data-tab'); render(); window.scrollTo(0, 0);
+  });
+  function arr(list) { return list === 'projects' ? S.idx.projects : list === 'karya' ? S.idx.karya : S.don.amounts; }
+  function download(text, name, type) {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text], { type: type || 'text/html' })); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  }
+  function validate() {
+    var bad = [];
+    if (S.idx) {
+      S.idx.projects.forEach(function (p, i) { if (!p.name.trim() || !p.url.trim()) bad.push('Proyek #' + (i + 1)); });
+      S.idx.karya.forEach(function (k, i) { if (!k.name.trim() || !k.url.trim() || !k.img.trim()) bad.push('Karya #' + (i + 1)); });
+    }
+    return bad;
+  }
+  $('app').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-act]'); if (!b) return;
+    var act = b.getAttribute('data-act'), list = b.getAttribute('data-list'), i = Number(b.getAttribute('data-i'));
+    if (act === 'up' || act === 'down') {
+      var a = arr(list), j = act === 'up' ? i - 1 : i + 1;
+      if (j < 0 || j >= a.length) return;
+      var t = a[i]; a[i] = a[j]; a[j] = t; saveDraft(); render();
+    } else if (act === 'del') {
+      if (list !== 'amounts' && !confirm('Hapus item ini?')) return;
+      arr(list).splice(i, 1); saveDraft(); render();
+    } else if (act === 'add-project') {
+      S.idx.projects.push({ name: 'Proyek baru', url: 'https://', desc: '', about: '', logo: logoFor('P') }); saveDraft(); render();
+    } else if (act === 'add-karya') {
+      S.idx.karya.push({ name: 'Karya baru', url: 'https://', img: '/img/', alt: '' }); saveDraft(); render();
+    } else if (act === 'add-amount') {
+      var last = S.don.amounts[S.don.amounts.length - 1] || 5000; S.don.amounts.push(last * 2); saveDraft(); render();
+    } else if (act === 'pick-idx') $('f-idx').click();
+    else if (act === 'pick-don') $('f-don').click();
+    else if (act === 'pick-json') $('f-json').click();
+    else if (act === 'dl-idx') {
+      var bad = validate(); if (bad.length && !confirm('Ada isian kosong di: ' + bad.join(', ') + '. Tetap unduh?')) return;
+      S.idx.projects.forEach(function (p) { if (!p.logo.trim()) p.logo = logoFor(p.name); });
+      download(exportIndex(), 'index.html'); toast('index.html diunduh');
+    } else if (act === 'dl-don') { download(exportDon(), 'donasi.html'); toast('donasi.html diunduh'); }
+    else if (act === 'dl-json') { download(JSON.stringify({ idx: S.idx, don: S.don, ext: S.ext }, null, 2), 'vylonium-data.json', 'application/json'); toast('Cadangan diunduh'); }
+    else if (act === 'reset') {
+      if (!confirm('Buang semua perubahan dan kembali ke isi file asli?')) return;
+      try { localStorage.removeItem(KEY); } catch (er) {}
+      if (S.srcIdx) S.idx = parseIndex(S.srcIdx);
+      if (S.srcDon) S.don = parseDon(S.srcDon);
+      baseline = snap(); render(); toast('Draf dibuang');
+    }
+  });
+
+  boot();
+})();
+</script>
+</body>
+</html>
