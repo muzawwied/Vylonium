@@ -9,7 +9,7 @@
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e0e10">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800&family=Cormorant+Garamond:ital,wght@1,600&family=Pirata+One&display=swap">
 <style>
 :root{
   --bg:#ffffff;--fg:#111111;--mut:#71717a;--card:#f4f4f5;--card2:#ececee;--line:#e5e7eb;--hov:#f4f4f6;
@@ -51,11 +51,6 @@ main{max-width:720px;margin:0 auto;animation:vin .22s cubic-bezier(.2,.7,.2,1)}
 .avatar svg{width:100%;height:100%;display:block}
 h1{font-family:var(--font-display);font-weight:800;font-size:26px;line-height:1.15;letter-spacing:-.03em}
 .sub{font-size:14px;color:var(--mut);max-width:42ch;text-wrap:pretty}
-.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px}
-.chip{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:9999px;background:var(--tile);font-size:12px;font-weight:600;color:var(--mut)}
-.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--mut)}
-.chip.ok{color:var(--fg)}.chip.ok::before{background:var(--ok)}
-.chip.warn{color:var(--fg)}.chip.warn::before{background:#f59e0b}
 
 .tabs{display:flex;margin-top:24px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
@@ -118,452 +113,564 @@ details[open] summary::after{content:" ▴"}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 footer{margin-top:40px;text-align:center;font-size:12px;color:var(--mut)}
 @media (prefers-reduced-motion:reduce){main{animation:none}.ib,.go,.toast{transition:none}}
+select.input{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--mut) 50%),linear-gradient(135deg,var(--mut) 50%,transparent 50%);background-position:calc(100% - 22px) 50%,calc(100% - 16px) 50%;background-size:6px 6px;background-repeat:no-repeat;padding-right:40px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#f59e0b;margin-left:8px;vertical-align:middle}
+.chk{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:14px;color:var(--mut)}
+.chk input{width:18px;height:18px;accent-color:var(--fg)}
+.go.danger{background:transparent;color:var(--err);border:1px solid var(--line)}
+
+/* ---- tidy ---- */
+body{padding-block:calc(28px + env(safe-area-inset-top,0px)) calc(40px + env(safe-area-inset-bottom,0px))}
+main{max-width:640px}
+.top{align-items:flex-start;text-align:left;gap:4px}
+h1{font-size:24px}
+.sub{max-width:none;font-size:14px}
+.tabs[hidden]{display:none}
+.tabs{margin-top:20px;padding:4px;gap:4px;border:0;background:var(--tile);border-radius:9999px;overflow:visible}
+.tab{flex:1 1 0;min-height:40px;padding:8px 10px;margin:0;border:0;border-radius:9999px;font-size:14px;text-align:center}
+.tab[aria-selected="true"]{background:var(--bg);color:var(--fg);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.label{margin:24px 0 4px;font-size:11.5px}
+.field{margin-top:14px}
+.field>span{font-size:12.5px;font-weight:500;margin-bottom:6px}
+.input{min-height:48px;padding:11px 16px;border-radius:14px;background:var(--bg)}
+textarea.input{min-height:88px}
+.item{margin-top:14px;padding:16px 16px 18px;background:var(--card);border-radius:20px}
+.item .input{background:var(--bg)}
+.item-h{padding-bottom:12px;margin-bottom:2px;border-bottom:1px solid var(--line)}
+.item-h b{font-size:15px}
+.tools{gap:2px}
+.ib{width:36px;height:36px}
+.ib svg{width:18px;height:18px}
+.thumb{margin-top:14px;border-radius:12px}
+.item .go{margin-top:18px}
+.go{min-height:50px;font-size:15px;margin-top:16px}
+.go.sm{min-height:46px}
+.go.danger{background:transparent}
+.empty{margin-top:14px;padding:22px 16px;border-radius:20px}
+.empty p{margin:0}
+.hint{font-size:12.5px;margin-top:8px}
+footer{margin-top:32px}
+@media (min-width:521px){
+  .go.ghost.sm,.go.danger.sm{width:auto;padding:0 22px}
+  .item .go,.go:not(.sm):not(.ghost){width:auto;padding:0 28px}
+  .item .go{margin-left:auto;display:flex}
+}
+
+/* ---- login & footer ---- */
+html{height:100%}
+body{min-height:100%;display:flex;flex-direction:column;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+main{width:100%;flex:1 0 auto;min-height:0;display:flex;flex-direction:column}
+footer{margin-top:auto;padding-top:28px}
+body.login .top{display:none}
+body.login #app{margin-top:auto}
+.field>span:empty{display:none}
+.brand{margin-bottom:26px;text-align:center;font-family:"Pirata One","Old English Text MT",Georgia,serif;font-size:54px;line-height:1.1;letter-spacing:.02em;color:var(--fg);
+  --ex:#8d8d96;
+  text-shadow:1px 1px 0 var(--ex),2px 2px 0 var(--ex),3px 3px 0 var(--ex),4px 4px 0 var(--ex),5px 5px 0 var(--ex),6px 6px 0 var(--ex),7px 7px 8px rgba(0,0,0,.45),10px 12px 18px rgba(0,0,0,.35)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .brand{--ex:#b4b4bc;text-shadow:1px 1px 0 var(--ex),2px 2px 0 var(--ex),3px 3px 0 var(--ex),4px 4px 0 var(--ex),5px 5px 0 var(--ex),6px 6px 0 var(--ex),7px 7px 8px rgba(0,0,0,.25),10px 12px 18px rgba(0,0,0,.18)}}
+/* ---- input kapsul ---- */
+input.input,select.input{border-radius:9999px;padding-left:22px;padding-right:22px}
+select.input{padding-right:44px;background-position:calc(100% - 26px) 50%,calc(100% - 20px) 50%}
+textarea.input{border-radius:22px}
+.pw{position:relative}
+.pw .input{padding-right:54px}
+.eye{position:absolute;right:6px;bottom:4px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:50%;background:transparent;color:var(--mut);cursor:pointer;transition:color .15s,background-color .15s}
+.eye svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.eye:active{background:var(--card2)}
+@media (hover:hover){.eye:hover{color:var(--fg)}}
+.go-login{font-family:"Cormorant Garamond","Playfair Display",Georgia,serif;font-style:italic;font-weight:600;font-size:21px;letter-spacing:.05em}
+.go.go-login{position:fixed;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:calc(24px + env(safe-area-inset-bottom,0px));margin:0 auto;max-width:608px;width:auto;z-index:20;box-shadow:var(--pill-sh-h)}
+body.login footer{order:0;margin-top:20px;padding-top:0;margin-bottom:auto}
+body:not(.login) footer{display:none}
+.pills { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 64px;
+  padding: 10px 12px;
+  border-radius: 9999px;
+  background: var(--pill-bg);
+  border: 1px solid var(--pill-bd);
+  box-shadow: var(--pill-sh);
+  color: var(--fg);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+@media (hover: hover) { .pill:hover { transform: translateY(-2px); box-shadow: var(--pill-sh-h); } }
+.pill:active { transform: scale(0.985); box-shadow: var(--pill-sh); }
+.pill > .ic:first-child {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  border-radius: 50%;
+  background: var(--tile);
+  color: var(--fg);
+}
+.pill {
+  padding: 7px;
+  min-height: 64px;
+  background: var(--tile);
+  border-color: transparent;
+  box-shadow: none;
+}
+@media (hover: hover) { .pill:hover { box-shadow: var(--pill-sh-h); } }
+.pill-t { text-transform: uppercase; letter-spacing: 0.07em; font-weight: 700; font-size: 15px; }
+.pill::after { content: ""; flex: none; width: 52px; }
+/* Logo: tetap putih, dengan cincin gradasi warna-warni */
+.pill .logo {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  padding: 2px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: linear-gradient(var(--a, 135deg), #3b82f6 0%, #8b5cf6 33%, #ec4899 66%, #f59e0b 100%);
+  box-shadow: 0 4px 12px -3px rgba(236, 72, 153, 0.45);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@media (hover: hover) { .pill:hover .logo { transform: rotate(-8deg) scale(1.08); } }
+.pill:active .logo { transform: scale(0.94); }
+.pill-row:nth-child(2) .logo { --a: 225deg; }
+.pill-row:nth-child(3) .logo { --a: 315deg; }
+.pill-t { flex: 1; min-width: 0; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.3; letter-spacing: -0.005em; overflow-wrap: anywhere; }
+
+.tabs {
+  display: flex;
+  margin-top: 24px;
+  border-bottom: 1px solid var(--line);
+}
+.tab {
+  flex: 1;
+  min-height: 44px;
+  padding: 12px 8px;
+  margin-bottom: -1px;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--mut);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab[aria-selected="true"] { color: var(--fg); font-weight: 600; border-bottom-color: var(--fg); }
+@media (hover: hover) { .tab:hover { color: var(--fg); } }
+#panel-proyek .pills { margin-top: 20px; }
+.gallery { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
+.shot { aspect-ratio: 16 / 9; margin: 0; border-radius: 16px; overflow: hidden; background: var(--card); border: 1px solid var(--line); }
+.shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.shot { position: relative; display: block; color: #fff; text-decoration: none; }
+.shot img { transition: transform 0.5s ease; }
+.shot::after { content: ""; position: absolute; inset: auto 0 0 0; height: 55%; background: linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0)); pointer-events: none; }
+.shot-name { position: absolute; z-index: 1; left: 16px; bottom: 16px; right: 130px; font-size: 15px; font-weight: 600; letter-spacing: -0.005em; text-shadow: 0 1px 6px rgba(0,0,0,0.5); }
+.shot-cta { position: absolute; z-index: 1; right: 12px; bottom: 12px; display: inline-flex; align-items: center; gap: 4px; padding: 8px 12px 8px 14px; border-radius: 9999px; background: #ffffff; color: #111; font-size: 13px; font-weight: 600; box-shadow: 0 4px 14px rgba(0,0,0,0.25); transition: transform 0.2s ease; }
+.shot-cta svg { width: 14px; height: 14px; }
+@media (hover: hover) { .shot:hover img { transform: scale(1.03); } .shot:hover .shot-cta { transform: translate(2px, -2px); } }
+.shot:active .shot-cta { transform: scale(0.95); }
+/* ---- tampilan seperti index ---- */
+.pill-row{position:relative}
+.pill span.logo{display:block}
+.logo img,.logo b{display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:50%;background:#fff;color:#000;object-fit:cover;font:800 20px var(--font-display)}
+.tabs{padding:0;gap:0;background:none;border-radius:0}.tab,.tab[aria-selected="true"]{border-radius:0;box-shadow:none;background:none}
+.tab[aria-selected="true"]{border-bottom:2px solid var(--fg)}
+main{max-width:560px}
+body:not(.login) main{animation:none}
+.profile{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding-top:4px}
+.edit-top{position:absolute;right:0;top:0;border:0;background:none;color:var(--fg);font:inherit;font-weight:600;font-size:15px;padding:8px 4px;cursor:pointer}
+.avatar{position:relative;width:96px;height:96px;margin:0 0 10px}
+.avatar>img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.pen{position:absolute;right:-2px;bottom:-2px;width:32px;height:32px;padding:0;border-radius:50%;border:2px solid var(--bg);background:var(--fg);color:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.pen svg{width:15px;height:15px}
+.profile h1{font-size:26px;letter-spacing:-.03em;text-wrap:balance}
+h1 .verified{width:.74em;height:.74em;margin-left:.2em;vertical-align:-.1em;flex:none;filter:drop-shadow(0 3px 5px rgba(76,29,149,.45))}
+.handle{font-size:14px;color:var(--mut)}
+.bio{max-width:36ch;margin-top:6px;font-size:14px;line-height:1.5;color:var(--mut);text-wrap:pretty}
+.socials{display:flex;justify-content:center;gap:6px;margin-top:12px}
+.sb{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:9999px;color:var(--fg)}
+.ic{display:block;width:22px;height:22px;fill:none;stroke:none}
+.pill{cursor:pointer}
+.rowpen{position:absolute;top:50%;right:13px;transform:translateY(-50%);width:40px;height:40px;display:flex;align-items:center;justify-content:center;color:var(--mut);pointer-events:none}
+.rowpen svg{width:20px;height:20px}
+.shot{cursor:pointer}.shot-cta svg{width:14px;height:14px}
+.addb{width:100%!important;margin-top:16px}
+.note{margin-top:16px;padding:14px 16px;border-radius:18px;background:var(--card);font-size:13.5px;color:var(--mut)}
+.note button{margin-top:10px}
+.pg-h{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.pg-h h2{font:800 20px var(--font-display);letter-spacing:-.02em}
+.up{display:flex;align-items:center;gap:16px;margin-top:16px}
+.up .logo{flex:none;width:84px;height:84px;padding:3px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#8b5cf6 33%,#ec4899 66%,#f59e0b);box-shadow:0 8px 20px -6px rgba(236,72,153,.45)}
+.up .ava{flex:none;width:84px;height:84px}.up .ava>img,.up .ava>svg{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.up .btns{flex:1;min-width:0}.up .btns .go{margin-top:8px}.up .btns .go:first-child{margin-top:0}
+.up-img{margin-top:16px}
+.up-img .shot{cursor:default;display:flex;align-items:center;justify-content:center;color:var(--mut);font-size:14px}
+.up-img .shot::after{display:none}
+.up-img .btns{display:flex;gap:10px;margin-top:10px}.up-img .btns .go{margin-top:0;width:auto;flex:1}
 </style>
 </head>
 <body>
 <main>
-  <header class="top">
-    <div class="avatar">
-      <svg viewBox="0 0 96 96" role="img" aria-label="Logo Vylonium">
-        <circle cx="48" cy="48" r="48" fill="var(--fg)"/>
-        <rect x="-6.5" y="-24" width="13" height="48" rx="6.5" fill="var(--bg)" transform="translate(38.5 48) rotate(-22)"/>
-        <rect x="-6.5" y="-24" width="13" height="48" rx="6.5" fill="var(--bg)" fill-opacity=".55" transform="translate(57.5 48) rotate(22)"/>
-      </svg>
-    </div>
-    <h1>Panel Admin</h1>
-    <p class="sub">Atur profil, proyek, karya, dan donasi, lalu unduh file hasilnya.</p>
-    <div class="chips" id="chips"></div>
-  </header>
-
-  <div class="tabs" role="tablist" aria-label="Menu admin" id="tabs"></div>
-  <div id="app" role="tabpanel"></div>
-
+  <div id="app"></div>
   <footer>&copy; 2026 Vylonium. Seluruh hak cipta dilindungi.</footer>
 </main>
 <div class="toast" id="toast" role="status"></div>
-<input type="file" id="f-idx" accept=".html,text/html" hidden>
-<input type="file" id="f-don" accept=".html,text/html" hidden>
-<input type="file" id="f-json" accept=".json,application/json" hidden>
 
 <script>
+
 (function () {
   var $ = function (id) { return document.getElementById(id); };
-  var KEY = 'vylonium-admin-draft-v1';
-  var TABS = [['profil','Profil'],['proyek','Proyek'],['karya','Karya'],['donasi','Donasi'],['seo','SEO'],['ekspor','Ekspor']];
+  var DEFAULT_BASE = 'https://app.vylonium.my.id';
+  var K_TOKEN = 'vylonium-admin-token', K_BASE = 'vylonium-admin-base';
+  var TABS = [['links','Proyek'],['portfolio','Karya'],['akun','Akun']];
   var ICON = {
+    eye: '<svg viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+    eyeoff: '<svg viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.5 10.5 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4.2"/><path d="M6.6 6.6A17 17 0 0 0 2 12s3.6 7 10 7c1.7 0 3.2-.4 4.5-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>',
     up: '<svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg>',
     down: '<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>',
     del: '<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>',
-    plus: '<svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round"><path d="M12 5v14M5 12h14"/></svg>',
-    x: '<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+    plus: '<svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round"><path d="M12 5v14M5 12h14"/></svg>'
   };
 
-  var S = { srcIdx: '', srcDon: '', idx: null, don: null, ext: { infoSvg: '', ctaSvg: '' }, tab: 'profil', base: '', hasDraft: false };
+  var OLD = {
+    settings: { title: 'Vylonium', bio: 'Membangun aplikasi web dan alat AI. Karya dan proyek saya bisa kamu temukan di sini.' },
+    links: [
+      { title: 'Clincoo', url: 'https://www.clincoo.buzz' },
+      { title: 'Clincoo Tools', url: 'https://tools.clincoo.buzz' },
+      { title: 'Clincoo AI', url: 'https://app.vylonium.biz.id' }
+    ],
+    portfolio: [
+      { title: 'Undangan Pernikahan', url: 'https://undangan.clincoo.biz.id/', image: '/img/undangan-pernikahan.webp?v=2' },
+      { title: 'Top Up Game', url: 'https://topup.clincoo.biz.id/', image: '/img/topup-game.webp?v=2' },
+      { title: 'Vylonium Tasks', url: 'https://task.clincoo.biz.id/', image: '/img/tasks-dashboard.webp?v=2' },
+      { title: 'Landing SaaS', url: 'https://saas.clincoo.biz.id/', image: '/img/saas-landing.webp?v=2' },
+      { title: 'Vylonium Properti', url: 'https://properti.clincoo.biz.id/', image: '/img/properti.webp?v=2' },
+      { title: 'Portofolio', url: 'https://portfolio.clincoo.biz.id/', image: '/img/portfolio.webp?v=2' },
+      { title: 'ModelLab', url: 'https://model-lab.clincoo.biz.id/', image: '/img/modellab-dashboard.webp?v=2' },
+      { title: 'Kedai Kopi', url: 'https://kedai-kopi.clincoo.biz.id/', image: '/img/kedai-kopi.webp?v=2' },
+      { title: 'Kawata Console', url: 'https://kawata.clincoo.biz.id/', image: '/img/kawata-console.webp?v=2' },
+      { title: 'Clincoo Favicon', url: 'https://tools.clincoo.buzz/tools/favicon/', image: '/img/favicon-generator.webp?v=2' }
+    ]
+  };
+
+  var S = { base: DEFAULT_BASE, token: '', tab: 'links', view: 'home', form: null, pf: null, busy: false, remember: true,
+            settings: { title: '', bio: '', handle: '', avatar: '', theme: 'dark' }, links: [], portfolio: [], donations: [], loaded: false };
 
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
-  function fmt(n) { return Number(n).toLocaleString('id-ID'); }
-  function digits(s) { return String(s).replace(/\D/g, ''); }
-  function slug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'item'; }
-  function toast(m) { var t = $('toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { t.classList.remove('on'); }, 2200); }
-  function parseHTML(t) { return new DOMParser().parseFromString(t, 'text/html'); }
-  function meta(doc, sel) { var e = doc.querySelector(sel); return e ? (e.getAttribute('content') || e.getAttribute('href') || '') : ''; }
-
-  /* ---------- Parse ---------- */
-  function parseIndex(text) {
-    var doc = parseHTML(text);
-    var h1 = doc.querySelector('.profile h1');
-    var name = '';
-    if (h1) for (var n = h1.firstChild; n; n = n.nextSibling) if (n.nodeType === 3 && n.textContent.trim()) { name = n.textContent.trim(); break; }
-    var firstInfo = doc.querySelector('.info-btn');
-    var firstCta = doc.querySelector('.shot-cta svg');
-    S.ext.infoSvg = firstInfo ? firstInfo.innerHTML : S.ext.infoSvg;
-    S.ext.ctaSvg = firstCta ? firstCta.outerHTML : S.ext.ctaSvg;
-    var foot = doc.querySelector('footer');
-    return {
-      name: name,
-      handle: (doc.querySelector('.handle') || {}).textContent || '',
-      bio: (doc.querySelector('.profile .bio') || {}).textContent || '',
-      footer: foot ? foot.textContent.trim() : '',
-      socials: [].map.call(doc.querySelectorAll('.socials a.ib'), function (a) { return { label: a.getAttribute('aria-label') || '', href: a.getAttribute('href') || '' }; }),
-      projects: [].map.call(doc.querySelectorAll('#panel-proyek .pill-row'), function (r) {
-        var a = r.querySelector('a.pill'), b = r.querySelector('.info-btn'), lg = r.querySelector('svg.logo');
-        var tpl = b && b.getAttribute('data-about') ? doc.getElementById(b.getAttribute('data-about')) : null;
-        return {
-          name: (r.querySelector('.pill-t') || {}).textContent || '',
-          url: a ? a.getAttribute('href') : '',
-          desc: b ? (b.getAttribute('data-desc') || '') : '',
-          about: tpl ? tpl.innerHTML.trim() : '',
-          logo: lg ? lg.outerHTML : ''
-        };
-      }),
-      karya: [].map.call(doc.querySelectorAll('#panel-karya a.shot'), function (a) {
-        var im = a.querySelector('img');
-        return { name: (a.querySelector('.shot-name') || {}).textContent || '', url: a.getAttribute('href') || '', img: im ? im.getAttribute('src') : '', alt: im ? (im.getAttribute('alt') || '') : '' };
-      }),
-      meta: {
-        title: doc.title || '',
-        description: meta(doc, 'meta[name="description"]'),
-        canonical: meta(doc, 'link[rel="canonical"]'),
-        ogTitle: meta(doc, 'meta[property="og:title"]'),
-        ogDesc: meta(doc, 'meta[property="og:description"]'),
-        ogImage: meta(doc, 'meta[property="og:image"]')
-      }
-    };
+  function toast(m) { var t = $('toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { t.classList.remove('on'); }, 2400); }
+  function store(k, v, persist) {
+    try { (persist ? localStorage : sessionStorage).setItem(k, v); (persist ? sessionStorage : localStorage).removeItem(k); } catch (e) {}
   }
+  function fetchStored(k) { try { return sessionStorage.getItem(k) || localStorage.getItem(k) || ''; } catch (e) { return ''; } }
+  function clearToken() { try { sessionStorage.removeItem(K_TOKEN); localStorage.removeItem(K_TOKEN); } catch (e) {} S.token = ''; S.loaded = false; }
+  function cleanBase(b) { b = String(b || '').trim().replace(/\/+$/, ''); if (b && !/^https?:\/\//i.test(b)) b = 'https://' + b; return b; }
 
-  function parseDon(text) {
-    var doc = parseHTML(text), sc = '';
-    [].forEach.call(doc.querySelectorAll('script:not([src])'), function (s) { if (/var API/.test(s.textContent)) sc = s.textContent; });
-    var api = (sc.match(/var API = '([^']*)'/) || [])[1] || '';
-    var def = (sc.match(/amountEl\.value = '([^']*)'/) || [])[1] || '10.000';
-    var min = (sc.match(/Number\(d\) < (\d+)/) || [])[1] || '1000';
-    return {
-      pageTitle: doc.title || '',
-      pageDesc: meta(doc, 'meta[name="description"]'),
-      title: (doc.querySelector('.profile h1') || {}).textContent || '',
-      bio: (doc.querySelector('.profile .bio') || {}).textContent || '',
-      amounts: [].map.call(doc.querySelectorAll('#amounts .amt'), function (b) { return Number(b.getAttribute('data-v')); }),
-      def: Number(digits(def)) || 10000,
-      min: Number(min),
-      api: api,
-      note: (doc.querySelector('.method') || {}).textContent || ''
-    };
+  /* ---------- API ---------- */
+  function AuthError() { var e = new Error('Token ditolak'); e.auth = true; return e; }
+  async function api(method, path, body) {
+    var opt = { method: method, headers: { 'Authorization': 'Bearer ' + S.token, 'Content-Type': 'application/json' }, cache: 'no-store' };
+    if (body !== undefined) opt.body = JSON.stringify(body);
+    var r;
+    try { r = await fetch(cleanBase(S.base) + path, opt); }
+    catch (e) { throw new Error('Tidak bisa terhubung. Periksa alamat Worker atau pengaturan CORS.'); }
+    if (r.status === 401 || r.status === 403) throw AuthError();
+    var txt = await r.text(), data = null;
+    try { data = txt ? JSON.parse(txt) : null; } catch (e) {}
+    if (!r.ok) throw new Error((data && (data.error || data.message)) || ('Gagal (' + r.status + ')'));
+    return data;
   }
-
-  /* ---------- Apply / export ---------- */
-  function mk(doc, tag, attrs, html) {
-    var e = doc.createElement(tag);
-    for (var k in attrs) if (attrs[k] != null) e.setAttribute(k, attrs[k]);
-    if (html != null) e.innerHTML = html;
-    return e;
+  function sortO(a) {
+    return (Array.isArray(a) ? a : []).map(function (x) { return Object.assign({}, x); })
+      .sort(function (x, y) { return (Number(x.order) || 0) - (Number(y.order) || 0); });
   }
-  function setMeta(doc, sel, val) { var e = doc.querySelector(sel); if (!e) return; if (e.tagName === 'LINK') e.setAttribute('href', val); else e.setAttribute('content', val); }
-
-  function exportIndex() {
-    var d = S.idx, doc = parseHTML(S.srcIdx), i;
-    var h1 = doc.querySelector('.profile h1');
-    if (h1) { for (var n = h1.firstChild; n; n = n.nextSibling) if (n.nodeType === 3 && n.textContent.trim()) { n.textContent = d.name; break; } }
-    var set = function (sel, v) { var e = doc.querySelector(sel); if (e) e.textContent = v; };
-    set('.handle', d.handle); set('.profile .bio', d.bio); set('footer', d.footer);
-    var soc = doc.querySelectorAll('.socials a.ib');
-    d.socials.forEach(function (s, k) { if (soc[k]) soc[k].setAttribute('href', s.href); });
-
-    var pills = doc.querySelector('#panel-proyek .pills');
-    pills.textContent = '';
-    [].forEach.call(doc.querySelectorAll('template[id^="about-"]'), function (t) { t.remove(); });
-    var sheet = doc.getElementById('sheet');
-    d.projects.forEach(function (p, k) {
-      var id = 'about-' + slug(p.name) + '-' + (k + 1);
-      var row = mk(doc, 'div', { 'class': 'pill-row' });
-      var a = mk(doc, 'a', { 'class': 'pill', href: p.url, target: '_blank', rel: 'noopener' });
-      var tmp = mk(doc, 'div', {}, p.logo || logoFor(p.name));
-      if (tmp.firstElementChild) a.appendChild(tmp.firstElementChild);
-      var t = mk(doc, 'span', { 'class': 'pill-t' }); t.textContent = p.name; a.appendChild(t);
-      var b = mk(doc, 'button', { 'class': 'info-btn', type: 'button', 'data-desc': p.desc, 'aria-label': 'Info tentang ' + p.name, 'aria-haspopup': 'dialog' }, S.ext.infoSvg);
-      if (p.about.trim()) {
-        b.setAttribute('data-about', id);
-        var tpl = mk(doc, 'template', { id: id }, p.about);
-        sheet.parentNode.insertBefore(tpl, sheet);
-      }
-      row.appendChild(a); row.appendChild(b); pills.appendChild(row);
-    });
-
-    var gal = doc.querySelector('#panel-karya .gallery');
-    gal.textContent = '';
-    d.karya.forEach(function (k) {
-      var a = mk(doc, 'a', { 'class': 'shot', href: k.url, target: '_blank', rel: 'noopener', 'aria-label': 'Kunjungi ' + k.name });
-      a.appendChild(mk(doc, 'img', { src: k.img, alt: k.alt, width: '1280', height: '720', loading: 'lazy' }));
-      var nm = mk(doc, 'span', { 'class': 'shot-name' }); nm.textContent = k.name; a.appendChild(nm);
-      a.appendChild(mk(doc, 'span', { 'class': 'shot-cta' }, 'Kunjungi ' + S.ext.ctaSvg));
-      gal.appendChild(a);
-    });
-
-    var m = d.meta;
-    if (m.title) doc.title = m.title;
-    setMeta(doc, 'meta[name="description"]', m.description);
-    setMeta(doc, 'link[rel="canonical"]', m.canonical);
-    setMeta(doc, 'meta[property="og:url"]', m.canonical);
-    setMeta(doc, 'meta[property="og:title"]', m.ogTitle); setMeta(doc, 'meta[name="twitter:title"]', m.ogTitle);
-    setMeta(doc, 'meta[property="og:description"]', m.ogDesc); setMeta(doc, 'meta[name="twitter:description"]', m.ogDesc);
-    setMeta(doc, 'meta[property="og:image"]', m.ogImage); setMeta(doc, 'meta[name="twitter:image"]', m.ogImage);
-    return '<!doctype html>\n' + doc.documentElement.outerHTML;
+  function keepLocal(local, fresh) {
+    var dirtyById = {};
+    local.forEach(function (x) { if (x._dirty && x.id != null) dirtyById[x.id] = x; });
+    var out = fresh.map(function (x) { return dirtyById[x.id] || x; });
+    local.forEach(function (x) { if (x.id == null) out.push(x); });
+    return out;
   }
-
-  function exportDon() {
-    var d = S.don, doc = parseHTML(S.srcDon);
-    if (d.pageTitle) doc.title = d.pageTitle;
-    setMeta(doc, 'meta[name="description"]', d.pageDesc);
-    var set = function (sel, v) { var e = doc.querySelector(sel); if (e) e.textContent = v; };
-    set('.profile h1', d.title); set('.profile .bio', d.bio); set('.method', d.note);
-    set('#min-hint', 'Minimal donasi Rp' + fmt(d.min));
-    var box = doc.getElementById('amounts');
-    box.textContent = '';
-    d.amounts.forEach(function (v) {
-      var b = mk(doc, 'button', { 'class': 'amt', type: 'button', 'data-v': String(v) });
-      if (v === Number(d.def)) b.setAttribute('aria-pressed', 'true');
-      b.textContent = fmt(v); box.appendChild(b);
-    });
-    var inp = doc.getElementById('amount');
-    if (inp) inp.setAttribute('placeholder', fmt(d.def));
-    [].forEach.call(doc.querySelectorAll('script:not([src])'), function (s) {
-      var t = s.textContent;
-      if (!/var API/.test(t)) return;
-      t = t.replace(/var API = '[^']*';/, "var API = '" + d.api.replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "';")
-           .replace(/amountEl\.value = '[^']*';/, "amountEl.value = '" + fmt(d.def) + "';")
-           .replace(/< 1000/g, '< ' + d.min)
-           .replace(/Minimal donasi Rp1\.000/g, 'Minimal donasi Rp' + fmt(d.min));
-      s.textContent = t;
-    });
-    return '<!doctype html>\n' + doc.documentElement.outerHTML;
+  async function load(merge) {
+    var d = await api('GET', '/admin/content') || {};
+    var fresh = { links: sortO(d.links), portfolio: sortO(d.portfolio) };
+    S.settings = Object.assign({ title: '', bio: '', handle: '', avatar: '', theme: 'dark' }, d.settings || {});
+    S.links = merge ? keepLocal(S.links, fresh.links) : fresh.links;
+    S.portfolio = merge ? keepLocal(S.portfolio, fresh.portfolio) : fresh.portfolio;
+    S.donations = Array.isArray(d.donations) ? d.donations : [];
+    S.loaded = true;
   }
-
-  function logoFor(name) {
-    var c = (name || '?').trim().charAt(0).toUpperCase();
-    return '<svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#ffffff"/><text x="16" y="22" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="800" font-size="17" fill="#000000">' + esc(c) + '</text></svg>';
+  async function run(fn, okMsg) {
+    if (S.busy) return;
+    S.busy = true; render();
+    try { await fn(); if (okMsg) toast(okMsg); }
+    catch (e) {
+      if (e.auth) { clearToken(); S.tab = 'akun'; toast('Token salah atau kedaluwarsa. Masuk lagi.'); }
+      else toast(e.message || 'Terjadi kesalahan');
+    }
+    S.busy = false; render();
+  }
+  function body(list, it, i) {
+    return list === 'links'
+      ? { title: it.title || '', url: it.url || '', logo: it.logo || '', order: i + 1 }
+      : { title: it.title || '', image: it.image || '', url: it.url || '', order: i + 1 };
   }
 
   /* ---------- State helpers ---------- */
   function ref(path) { var p = path.split('.'), o = S; for (var i = 0; i < p.length - 1; i++) o = o[p[i]]; return [o, p[p.length - 1]]; }
   function getv(path) { var r = ref(path); return r[0][r[1]]; }
   function setv(path, v) { var r = ref(path); r[0][r[1]] = v; }
-  function snap() { return JSON.stringify({ idx: S.idx, don: S.don }); }
-  var baseline = '';
-  function dirty() { return baseline !== snap(); }
-  function saveDraft() { try { localStorage.setItem(KEY, JSON.stringify({ idx: S.idx, don: S.don, ext: S.ext })); } catch (e) {} chips(); }
-
-  /* ---------- Loading ---------- */
-  async function tryFetch(urls, needle) {
-    for (var i = 0; i < urls.length; i++) {
-      try { var r = await fetch(urls[i], { cache: 'no-store' }); if (r.ok) { var t = await r.text(); if (t.indexOf(needle) > -1) return t; } } catch (e) {}
-    }
-    return null;
-  }
-  function applyDraft() {
-    try {
-      var raw = localStorage.getItem(KEY); if (!raw) return;
-      var d = JSON.parse(raw);
-      if (d.idx && S.idx) S.idx = d.idx;
-      if (d.don && S.don) S.don = d.don;
-      if (d.ext && d.ext.infoSvg) S.ext = d.ext;
-      S.hasDraft = true;
-    } catch (e) {}
-  }
-  function loadIdx(text) { S.srcIdx = text; S.idx = parseIndex(text); }
-  function loadDon(text) { S.srcDon = text; S.don = parseDon(text); }
-  async function boot() {
-    chips(); render();
-    var a = await tryFetch(['/index.html', '/'], 'id="panel-proyek"');
-    var b = await tryFetch(['/donasi/index.html', '/donasi/', '/donasi.html'], 'id="v-form"');
-    var fresh = {};
-    if (a) { loadIdx(a); fresh.idx = S.idx; }
-    if (b) { loadDon(b); fresh.don = S.don; }
-    baseline = JSON.stringify({ idx: S.idx, don: S.don });
-    applyDraft();
-    chips(); render();
-  }
-  function readFile(input, cb) {
-    input.addEventListener('change', function () {
-      var f = input.files[0]; if (!f) return;
-      var r = new FileReader();
-      r.onload = function () { cb(String(r.result)); input.value = ''; };
-      r.readAsText(f);
-    });
-  }
-  readFile($('f-idx'), function (t) {
-    if (t.indexOf('id="panel-proyek"') < 0) { toast('Ini bukan index.html Vylonium'); return; }
-    loadIdx(t); baseline = snap(); applyDraft(); saveDraft(); render(); toast('index.html dimuat');
-  });
-  readFile($('f-don'), function (t) {
-    if (t.indexOf('id="v-form"') < 0) { toast('Ini bukan donasi.html Vylonium'); return; }
-    loadDon(t); baseline = snap(); applyDraft(); saveDraft(); render(); toast('donasi.html dimuat');
-  });
-  readFile($('f-json'), function (t) {
-    try { var d = JSON.parse(t); if (d.idx) S.idx = d.idx; if (d.don) S.don = d.don; if (d.ext) S.ext = d.ext; saveDraft(); render(); toast('Data diimpor'); }
-    catch (e) { toast('File JSON tidak valid'); }
-  });
 
   /* ---------- Render ---------- */
-  function chips() {
-    var c = [];
-    c.push('<span class="chip ' + (S.idx ? 'ok' : 'warn') + '">index.html ' + (S.idx ? 'dimuat' : 'belum dimuat') + '</span>');
-    c.push('<span class="chip ' + (S.don ? 'ok' : 'warn') + '">donasi.html ' + (S.don ? 'dimuat' : 'belum dimuat') + '</span>');
-    if (S.idx || S.don) c.push('<span class="chip ' + (dirty() ? 'warn' : 'ok') + '">' + (dirty() ? 'Ada perubahan' : 'Tanpa perubahan') + '</span>');
-    $('chips').innerHTML = c.join('');
+  var VERIFIED = "<svg class=\"verified\" viewBox=\"0 0 24 24\" overflow=\"visible\" role=\"img\" aria-label=\"Terverifikasi\"><title>Terverifikasi</title><defs>\n<linearGradient id=\"v3rim\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#c4b5fd\"/><stop offset=\".5\" stop-color=\"#7c3aed\"/><stop offset=\"1\" stop-color=\"#312e81\"/></linearGradient>\n<linearGradient id=\"v3face\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#a78bfa\"/><stop offset=\".55\" stop-color=\"#6d5dfc\"/><stop offset=\"1\" stop-color=\"#22d3ee\"/></linearGradient>\n<linearGradient id=\"v3gloss\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#fff\" stop-opacity=\".75\"/><stop offset=\"1\" stop-color=\"#fff\" stop-opacity=\"0\"/></linearGradient>\n<clipPath id=\"v3clip\"><path d=\"M22.5 12.5c0-1.58-.88-2.95-2.18-3.66.54-1.4.24-3.04-.89-4.17-1.13-1.13-2.77-1.43-4.17-.89C14.54 2.48 13.17 1.6 11.59 1.6S8.64 2.48 7.93 3.78c-1.4-.54-3.04-.24-4.17.89-1.13 1.13-1.43 2.77-.89 4.17C1.57 9.55.69 10.92.69 12.5s.88 2.95 2.18 3.66c-.54 1.4-.24 3.04.89 4.17 1.13 1.13 2.77 1.43 4.17.89.71 1.3 2.08 2.18 3.66 2.18s2.95-.88 3.66-2.18c1.4.54 3.04.24 4.17-.89 1.13-1.13 1.43-2.77.89-4.17 1.3-.71 2.18-2.08 2.18-3.66z\" transform=\"translate(12 12) scale(.8) translate(-12 -12) translate(.4 -.5)\"/></clipPath>\n</defs>\n<path d=\"M22.5 12.5c0-1.58-.88-2.95-2.18-3.66.54-1.4.24-3.04-.89-4.17-1.13-1.13-2.77-1.43-4.17-.89C14.54 2.48 13.17 1.6 11.59 1.6S8.64 2.48 7.93 3.78c-1.4-.54-3.04-.24-4.17.89-1.13 1.13-1.43 2.77-.89 4.17C1.57 9.55.69 10.92.69 12.5s.88 2.95 2.18 3.66c-.54 1.4-.24 3.04.89 4.17 1.13 1.13 2.77 1.43 4.17.89.71 1.3 2.08 2.18 3.66 2.18s2.95-.88 3.66-2.18c1.4.54 3.04.24 4.17-.89 1.13-1.13 1.43-2.77.89-4.17 1.3-.71 2.18-2.08 2.18-3.66z\" fill=\"#1e1b4b\" opacity=\".5\" transform=\"translate(0 1) translate(.4 -.5)\"/>\n<path d=\"M22.5 12.5c0-1.58-.88-2.95-2.18-3.66.54-1.4.24-3.04-.89-4.17-1.13-1.13-2.77-1.43-4.17-.89C14.54 2.48 13.17 1.6 11.59 1.6S8.64 2.48 7.93 3.78c-1.4-.54-3.04-.24-4.17.89-1.13 1.13-1.43 2.77-.89 4.17C1.57 9.55.69 10.92.69 12.5s.88 2.95 2.18 3.66c-.54 1.4-.24 3.04.89 4.17 1.13 1.13 2.77 1.43 4.17.89.71 1.3 2.08 2.18 3.66 2.18s2.95-.88 3.66-2.18c1.4.54 3.04.24 4.17-.89 1.13-1.13 1.43-2.77.89-4.17 1.3-.71 2.18-2.08 2.18-3.66z\" fill=\"url(#v3rim)\" transform=\"translate(.4 -.5)\"/>\n<path d=\"M22.5 12.5c0-1.58-.88-2.95-2.18-3.66.54-1.4.24-3.04-.89-4.17-1.13-1.13-2.77-1.43-4.17-.89C14.54 2.48 13.17 1.6 11.59 1.6S8.64 2.48 7.93 3.78c-1.4-.54-3.04-.24-4.17.89-1.13 1.13-1.43 2.77-.89 4.17C1.57 9.55.69 10.92.69 12.5s.88 2.95 2.18 3.66c-.54 1.4-.24 3.04.89 4.17 1.13 1.13 2.77 1.43 4.17.89.71 1.3 2.08 2.18 3.66 2.18s2.95-.88 3.66-2.18c1.4.54 3.04.24 4.17-.89 1.13-1.13 1.43-2.77.89-4.17 1.3-.71 2.18-2.08 2.18-3.66z\" fill=\"url(#v3face)\" transform=\"translate(12 12) scale(.8) translate(-12 -12) translate(.4 -.5)\"/>\n<g clip-path=\"url(#v3clip)\"><ellipse cx=\"12\" cy=\"5.4\" rx=\"9\" ry=\"5.6\" fill=\"url(#v3gloss)\"/></g>\n<path d=\"M22.5 12.5c0-1.58-.88-2.95-2.18-3.66.54-1.4.24-3.04-.89-4.17-1.13-1.13-2.77-1.43-4.17-.89C14.54 2.48 13.17 1.6 11.59 1.6S8.64 2.48 7.93 3.78c-1.4-.54-3.04-.24-4.17.89-1.13 1.13-1.43 2.77-.89 4.17C1.57 9.55.69 10.92.69 12.5s.88 2.95 2.18 3.66c-.54 1.4-.24 3.04.89 4.17 1.13 1.13 2.77 1.43 4.17.89.71 1.3 2.08 2.18 3.66 2.18s2.95-.88 3.66-2.18c1.4.54 3.04.24 4.17-.89 1.13-1.13 1.43-2.77.89-4.17 1.3-.71 2.18-2.08 2.18-3.66z\" fill=\"none\" stroke=\"#fff\" stroke-opacity=\".45\" stroke-width=\".5\" transform=\"translate(12 12) scale(.8) translate(-12 -12) translate(.4 -.5)\"/>\n<path d=\"m7.9 13 2.8 2.8 5.4-5.6\" fill=\"none\" stroke=\"#2e1065\" stroke-opacity=\".45\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path d=\"m7.9 12.2 2.8 2.8 5.4-5.6\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</svg>", SOCIALS = "<nav class=\"socials\" aria-label=\"Media sosial\">\n      <a class=\"sb\" href=\"https://www.instagram.com/vylonium.vy\" target=\"_blank\" rel=\"noopener\" aria-label=\"Instagram\">\n        <svg class=\"ic brand\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><defs><radialGradient id=\"igg\" cx=\"0.3\" cy=\"1.07\" r=\"1.2\" fx=\"0.3\" fy=\"1.07\"><stop offset=\"0\" stop-color=\"#FFDD55\"/><stop offset=\"0.1\" stop-color=\"#FFDD55\"/><stop offset=\"0.5\" stop-color=\"#FF543E\"/><stop offset=\"1\" stop-color=\"#C837AB\"/></radialGradient></defs><path fill=\"url(#igg)\" d=\"M7.03.084c-1.277.06-2.149.264-2.91.563a5.9 5.9 0 0 0-2.124 1.388 5.9 5.9 0 0 0-1.38 2.127C.321 4.926.12 5.8.064 7.076s-.069 1.688-.063 4.947.021 3.667.083 4.947c.061 1.277.264 2.149.563 2.911.308.789.72 1.457 1.388 2.123a5.9 5.9 0 0 0 2.129 1.38c.763.295 1.636.496 2.913.552 1.278.056 1.689.069 4.947.063s3.668-.021 4.947-.082c1.28-.06 2.147-.265 2.91-.563a5.9 5.9 0 0 0 2.123-1.388 5.9 5.9 0 0 0 1.38-2.129c.295-.763.496-1.636.551-2.912.056-1.28.07-1.69.063-4.948-.006-3.258-.02-3.667-.081-4.947-.06-1.28-.264-2.148-.564-2.911a5.9 5.9 0 0 0-1.387-2.123 5.86 5.86 0 0 0-2.128-1.38C19.074.322 18.202.12 16.924.066 15.647.009 15.236-.006 11.977 0S8.31.021 7.03.084m.14 21.693c-1.17-.05-1.805-.245-2.228-.408a3.7 3.7 0 0 1-1.382-.895 3.7 3.7 0 0 1-.9-1.378c-.165-.423-.363-1.058-.417-2.228-.06-1.264-.072-1.644-.08-4.848-.006-3.204.006-3.583.061-4.848.05-1.169.246-1.805.408-2.228.216-.561.477-.96.895-1.382a3.7 3.7 0 0 1 1.379-.9c.423-.165 1.057-.361 2.227-.417 1.265-.06 1.644-.072 4.848-.08 3.203-.006 3.583.006 4.85.062 1.168.05 1.804.244 2.227.408.56.216.96.475 1.382.895s.681.817.9 1.378c.165.422.362 1.056.417 2.227.06 1.265.074 1.645.08 4.848.005 3.203-.006 3.583-.061 4.848-.051 1.17-.245 1.805-.408 2.23-.216.56-.477.96-.896 1.38a3.7 3.7 0 0 1-1.378.9c-.422.165-1.058.362-2.226.418-1.266.06-1.645.072-4.85.079s-3.582-.006-4.848-.06m9.783-16.192a1.44 1.44 0 1 0 1.437-1.442 1.44 1.44 0 0 0-1.437 1.442M5.839 12.012a6.161 6.161 0 1 0 12.323-.024 6.162 6.162 0 0 0-12.323.024M8 12.008A4 4 0 1 1 12.008 16 4 4 0 0 1 8 12.008\"/></svg>\n      </a>\n      <a class=\"sb\" href=\"https://www.tiktok.com/@vylonium.vy\" target=\"_blank\" rel=\"noopener\" aria-label=\"TikTok\">\n        <svg class=\"ic brand\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07\"/></svg>\n      </a>\n      <a class=\"sb\" href=\"https://wa.me/6283181586254\" target=\"_blank\" rel=\"noopener\" aria-label=\"WhatsApp\">\n        <svg class=\"ic brand\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"#25D366\" d=\"M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52s.198-.298.298-.497c.099-.198.05-.371-.025-.52s-.669-1.612-.916-2.207c-.242-.579-.487-.5-.669-.51a13 13 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074s2.096 3.2 5.077 4.487c.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413s.248-1.289.173-1.413c-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.82 11.82 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.9 11.9 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.82 11.82 0 0 0-3.48-8.413\"/></svg>\n      </a>\n      <a class=\"sb\" href=\"https://t.me/+6283181586254\" target=\"_blank\" rel=\"noopener\" aria-label=\"Telegram\">\n        <svg class=\"ic brand\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"#26A5E4\" d=\"M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm4.962 7.224c.1-.002.321.023.465.14a.5.5 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024q-.159.037-5.061 3.345-.72.495-1.302.48c-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789q.04-.324.893-.663 5.247-2.286 6.998-3.014c3.332-1.386 4.025-1.627 4.476-1.635\"/></svg>\n      </a>\n    </nav>";
+  var SV = ' fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+  ICON.pen = '<svg viewBox="0 0 24 24"' + SV + '><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>';
+  ICON.back = '<svg viewBox="0 0 24 24"' + SV + '><path d="M15 5l-7 7 7 7"/></svg>';
+  var DEFAV = '<svg viewBox="0 0 96 96"><circle cx="48" cy="48" r="48" fill="var(--fg)"/><rect x="-6.5" y="-24" width="13" height="48" rx="6.5" fill="var(--bg)" transform="translate(38.5 48) rotate(-22)"/><rect x="-6.5" y="-24" width="13" height="48" rx="6.5" fill="var(--bg)" fill-opacity=".55" transform="translate(57.5 48) rotate(22)"/></svg>';
+  var LOGO = [160, .85, true], AVATAR = [320, .85, true], IMG = [960, .78, false];
+
+  /* Upload gambar: dikecilkan di browser lalu disimpan sebagai data URL di kolom logo / image / avatar.
+     Kalau nanti pakai R2/storage, cukup ganti shrink() agar mengembalikan URL hasil upload. */
+  function shrink(file, max, q, square) {
+    return new Promise(function (res, rej) {
+      if (!/^image\//.test(file.type)) return rej(new Error('File harus berupa gambar'));
+      var u = URL.createObjectURL(file), im = new Image();
+      im.onerror = function () { URL.revokeObjectURL(u); rej(new Error('Gambar tidak bisa dibaca')); };
+      im.onload = function () {
+        var sx = 0, sy = 0, sw = im.width, sh = im.height;
+        if (square) { var m = Math.min(sw, sh); sx = (sw - m) / 2; sy = (sh - m) / 2; sw = sh = m; }
+        var k = Math.min(1, max / Math.max(sw, sh)), c = document.createElement('canvas');
+        c.width = Math.round(sw * k); c.height = Math.round(sh * k);
+        c.getContext('2d').drawImage(im, sx, sy, sw, sh, 0, 0, c.width, c.height); URL.revokeObjectURL(u);
+        var d = c.toDataURL('image/webp', q); if (d.indexOf('data:image/webp') !== 0) d = c.toDataURL('image/jpeg', q);
+        res(d);
+      };
+      im.src = u;
+    });
   }
-  function tabsHtml() {
-    $('tabs').innerHTML = TABS.map(function (t) {
-      return '<button class="tab" role="tab" type="button" data-tab="' + t[0] + '" aria-selected="' + (S.tab === t[0]) + '">' + t[1] + '</button>';
-    }).join('');
+  var picker = document.createElement('input'); picker.type = 'file'; picker.accept = 'image/*'; picker.hidden = true; document.body.appendChild(picker);
+  function pick(o, cb) {
+    picker.value = '';
+    picker.onchange = function () { var f = picker.files[0]; if (f) shrink(f, o[0], o[1], o[2]).then(cb, function (e) { toast(e.message); }); };
+    picker.click();
   }
+
   function field(label, path, o) {
     o = o || {};
-    var v = getv(path), cls = 'input' + (o.code ? ' code' : '');
-    var inner = o.rows
-      ? '<textarea class="' + cls + '" data-path="' + path + '" rows="' + o.rows + '" placeholder="' + esc(o.ph || '') + '" spellcheck="false">' + esc(v) + '</textarea>'
-      : '<input class="' + cls + '" data-path="' + path + '"' + (o.num ? ' data-num="1" inputmode="numeric"' : '') + ' value="' + esc(o.num ? fmt(v) : v) + '" placeholder="' + esc(o.ph || '') + '" autocomplete="off">';
+    var v = getv(path), inner;
+    if (o.select) {
+      inner = '<select class="input" data-path="' + path + '">' + o.select.map(function (x) {
+        return '<option value="' + x[0] + '"' + (String(v) === x[0] ? ' selected' : '') + '>' + x[1] + '</option>';
+      }).join('') + '</select>';
+    } else if (o.rows) {
+      inner = '<textarea class="input" data-path="' + path + '" rows="' + o.rows + '" placeholder="' + esc(o.ph || '') + '">' + esc(v) + '</textarea>';
+    } else {
+      inner = '<input class="input" data-path="' + path + '"' + (o.type ? ' type="' + o.type + '"' : '') + ' value="' + esc(v) + '" placeholder="' + esc(o.ph || '') + '" autocomplete="off" autocapitalize="off" spellcheck="false">';
+    }
     return '<label class="field"><span>' + label + '</span>' + inner + '</label>' + (o.hint ? '<p class="hint">' + o.hint + '</p>' : '');
   }
-  function tools(list, i, len) {
-    return '<div class="tools">' +
-      '<button class="ib" type="button" data-act="up" data-list="' + list + '" data-i="' + i + '" aria-label="Naik"' + (i === 0 ? ' disabled' : '') + '>' + ICON.up + '</button>' +
-      '<button class="ib" type="button" data-act="down" data-list="' + list + '" data-i="' + i + '" aria-label="Turun"' + (i === len - 1 ? ' disabled' : '') + '>' + ICON.down + '</button>' +
-      '<button class="ib danger" type="button" data-act="del" data-list="' + list + '" data-i="' + i + '" aria-label="Hapus">' + ICON.del + '</button></div>';
-  }
-  function loader(kind) {
-    var isIdx = kind === 'idx';
-    return '<div class="empty"><h2>Muat ' + (isIdx ? 'index.html' : 'donasi.html') + '</h2>' +
-      '<p>Panel tidak menemukan file ini secara otomatis. Pilih file dari komputermu, isinya akan dibaca di browser saja.</p>' +
-      '<button class="go" type="button" data-act="pick-' + kind + '">Pilih ' + (isIdx ? 'index.html' : 'donasi.html') + '</button></div>';
-  }
 
-  var views = {
-    profil: function () {
-      if (!S.idx) return loader('idx');
-      var h = '<p class="label">Profil</p>' +
-        field('Nama', 'idx.name') + field('Handle', 'idx.handle', { ph: '@nama' }) + field('Bio', 'idx.bio', { rows: 3 }) +
-        field('Teks footer', 'idx.footer');
-      h += '<p class="label">Media sosial</p>';
-      S.idx.socials.forEach(function (s, i) {
-        h += field(esc(s.label), 'idx.socials.' + i + '.href', { ph: 'https://' });
-      });
-      h += '<p class="hint">Ikon sosial tidak berubah, hanya tautannya. Untuk WhatsApp pakai format https://wa.me/62xxxxxxxxxx.</p>';
-      return h;
-    },
-    proyek: function () {
-      if (!S.idx) return loader('idx');
-      var h = '<p class="label">Daftar proyek (' + S.idx.projects.length + ')</p>';
-      S.idx.projects.forEach(function (p, i) {
-        var pre = 'idx.projects.' + i;
-        h += '<div class="item"><div class="item-h"><b>' + (i + 1) + '. ' + esc(p.name || 'Tanpa nama') + '</b>' + tools('projects', i, S.idx.projects.length) + '</div>' +
-          field('Nama', pre + '.name') + field('Tautan', pre + '.url', { ph: 'https://' }) +
-          field('Deskripsi singkat', pre + '.desc', { rows: 2, hint: 'Dipakai juga sebagai pesan otomatis di halaman donasi.' }) +
-          '<details><summary>Konten halaman &ldquo;Tentang&rdquo; (HTML)</summary>' +
-          field('HTML', pre + '.about', { rows: 10, code: true, hint: 'Kosongkan jika hanya ingin memakai deskripsi singkat.' }) + '</details>' +
-          '<details><summary>Logo (kode SVG)</summary>' +
-          field('SVG', pre + '.logo', { rows: 6, code: true, hint: 'Harus diawali &lt;svg class=&quot;logo&quot; ... &gt;. Kosongkan untuk logo huruf otomatis.' }) + '</details></div>';
-      });
-      return h + '<button class="go ghost sm" type="button" data-act="add-project">' + ICON.plus + ' Tambah proyek</button>';
-    },
-    karya: function () {
-      if (!S.idx) return loader('idx');
-      var h = '<p class="label">Galeri karya (' + S.idx.karya.length + ')</p>';
-      S.idx.karya.forEach(function (k, i) {
-        var pre = 'idx.karya.' + i;
-        h += '<div class="item"><div class="item-h"><b>' + (i + 1) + '. ' + esc(k.name || 'Tanpa nama') + '</b>' + tools('karya', i, S.idx.karya.length) + '</div>' +
-          (k.img ? '<div class="thumb"><img src="' + esc(k.img) + '" alt="" onerror="this.style.display=\'none\'"></div>' : '') +
-          field('Nama', pre + '.name') + field('Tautan', pre + '.url', { ph: 'https://' }) +
-          field('Gambar', pre + '.img', { ph: '/img/nama.webp', hint: 'Pratinjau tampil bila panel dibuka dari situs yang sama.' }) +
-          field('Teks alternatif', pre + '.alt') + '</div>';
-      });
-      return h + '<button class="go ghost sm" type="button" data-act="add-karya">' + ICON.plus + ' Tambah karya</button>';
-    },
-    donasi: function () {
-      if (!S.don) return loader('don');
-      var h = '<p class="label">Teks halaman</p>' + field('Judul', 'don.title') + field('Bio', 'don.bio', { rows: 3 }) + field('Catatan metode bayar', 'don.note', { rows: 2 });
-      h += '<p class="label">Nominal cepat</p><div class="amts">';
-      S.don.amounts.forEach(function (v, i) {
-        h += '<div class="amt"><span style="color:var(--mut);font-size:13px">Rp</span><input data-path="don.amounts.' + i + '" data-num="1" inputmode="numeric" value="' + esc(fmt(v)) + '" aria-label="Nominal ' + (i + 1) + '">' +
-          '<button class="ib" type="button" data-act="del" data-list="amounts" data-i="' + i + '" aria-label="Hapus">' + ICON.x + '</button></div>';
-      });
-      h += '</div><button class="go ghost sm" type="button" data-act="add-amount" style="width:auto;padding:0 20px">' + ICON.plus + ' Tambah nominal</button>';
-      h += '<div class="grid2">' + field('Nominal terpilih awal', 'don.def', { num: true }) + field('Minimal donasi', 'don.min', { num: true }) + '</div>';
-      h += '<p class="label">Teknis</p>' + field('Alamat API pembayaran', 'don.api', { ph: 'https://' }) +
-        '<p class="hint">Ubah hanya jika server pembayaran pindah. Salah isi membuat donasi gagal.</p>';
-      h += '<p class="label">Meta halaman</p>' + field('Judul tab', 'don.pageTitle') + field('Deskripsi', 'don.pageDesc', { rows: 2 });
-      return h;
-    },
-    seo: function () {
-      if (!S.idx) return loader('idx');
-      return '<p class="label">Meta &amp; berbagi</p>' + field('Judul tab', 'idx.meta.title') + field('Deskripsi', 'idx.meta.description', { rows: 3 }) +
-        field('URL kanonik', 'idx.meta.canonical', { ph: 'https://' }) + field('Judul saat dibagikan', 'idx.meta.ogTitle') +
-        field('Deskripsi saat dibagikan', 'idx.meta.ogDesc', { rows: 2 }) + field('Gambar pratinjau (OG)', 'idx.meta.ogImage', { ph: 'https://' });
-    },
-    ekspor: function () {
-      var h = '<p class="label">Sumber file</p><div class="row wrap">' +
-        '<button class="go ghost sm" type="button" data-act="pick-idx">Muat index.html</button>' +
-        '<button class="go ghost sm" type="button" data-act="pick-don">Muat donasi.html</button></div>';
-      h += '<p class="label">Unduh hasil</p>' +
-        '<button class="go" type="button" data-act="dl-idx"' + (S.idx ? '' : ' disabled') + '>Unduh index.html</button>' +
-        '<button class="go" type="button" data-act="dl-don"' + (S.don ? '' : ' disabled') + '>Unduh donasi.html</button>' +
-        '<div class="row wrap"><button class="go ghost sm" type="button" data-act="dl-json">Cadangan data (.json)</button>' +
-        '<button class="go ghost sm" type="button" data-act="pick-json">Impor data (.json)</button></div>' +
-        '<button class="go ghost sm" type="button" data-act="reset">Buang perubahan &amp; muat ulang dari file</button>';
-      h += '<p class="label">Cara menerapkan</p><ol class="steps">' +
-        '<li><strong>Edit</strong> di tab-tab di atas. Perubahan tersimpan otomatis sebagai draf di browser ini.</li>' +
-        '<li><strong>Unduh</strong> index.html dan/atau donasi.html.</li>' +
-        '<li><strong>Timpa</strong> file lama di server atau repo dengan file hasil unduhan, lalu deploy.</li>' +
-        '<li>Jika mengganti gambar dengan nama yang sama, naikkan angka <strong>?v=</strong> di path gambar agar cache diperbarui.</li></ol>';
-      h += '<p class="label">Keamanan</p><p class="hint">Panel ini berjalan sepenuhnya di browser dan tidak punya login. Jangan taruh di server publik tanpa proteksi (misalnya basic auth atau Cloudflare Access), atau simpan saja di komputermu dan buka secara lokal. Halaman ini sudah diberi noindex.</p>';
-      return h;
-    }
-  };
-
-  function render() { tabsHtml(); $('app').innerHTML = views[S.tab](); chips(); }
+  function initial(t) { return esc((t || '?').trim().charAt(0).toUpperCase() || '?'); }
+  function logoEl(it) { return '<span class="logo">' + (it.logo ? '<img src="' + esc(it.logo) + '" alt="">' : '<b>' + initial(it.title) + '</b>') + '</span>'; }
+  function urlField(label, path) {
+    var v = getv(path) || '';
+    return '<label class="field"><span>' + label + '</span><input class="input" data-path="' + path + '" value="' + esc(/^data:/.test(v) ? '' : v) + '" placeholder="' + (/^data:/.test(v) ? '(gambar terunggah)' : 'https://') + '" autocomplete="off" autocapitalize="off" spellcheck="false"></label>';
+  }
+  function oldMissing() {
+    var h = function (a, u) { return a.some(function (x) { return String(x.url || '').replace(/\/+$/, '') === u.replace(/\/+$/, ''); }); };
+    return OLD.links.some(function (l) { return !h(S.links, l.url); }) || OLD.portfolio.some(function (l) { return !h(S.portfolio, l.url); });
+  }
+  function login() {
+    return '<div class="brand">Vylonium</div>' +
+      '<div class="pw">' + field('', 'token', { type: 'password', ph: 'Password' }) +
+      '<button class="eye" type="button" data-act="eye" aria-label="Tampilkan password">' + ICON.eye + '</button></div>' +
+      '<label class="chk"><input type="checkbox" id="remember"' + (S.remember ? ' checked' : '') + '> Ingat token di perangkat ini</label>' +
+      '<button class="go go-login" type="button" data-act="login"' + (S.busy ? ' disabled' : '') + '>' + (S.busy ? 'Memeriksa…' : 'Konfirmasi') + '</button>';
+  }
+  function akun() {
+    var d = S.busy ? ' disabled' : '';
+    return '<p class="label">Data lama dari index</p>' +
+      '<button class="go ghost sm" type="button" data-act="import-old"' + d + '>Daftarkan data lama ke Workers</button>' +
+      '<p class="hint">Mengirim 3 proyek, 10 karya, dan profil dari index.html ke server. Yang tautannya sudah ada tidak dobel.</p>' +
+      '<p class="label">Sinkronisasi</p>' +
+      '<button class="go ghost sm" type="button" data-act="reload"' + d + '>Muat ulang dari server</button>' +
+      '<button class="go ghost sm" type="button" data-act="push-all"' + d + '>Kirim semua sekaligus (PUT /admin/content)</button>' +
+      '<p class="hint">Kirim semua akan menimpa settings, links, dan portfolio di server dengan isi panel ini.</p>' +
+      '<p class="label">Cadangan</p><button class="go ghost sm" type="button" data-act="dl-json">Unduh cadangan (.json)</button>' +
+      '<p class="label">Sesi</p><button class="go danger sm" type="button" data-act="logout">Keluar</button>';
+  }
+  function home() {
+    var s = S.settings, d = S.busy ? ' disabled' : '';
+    var h = '<header class="profile"><button class="edit-top" type="button" data-act="edit-profile">Edit</button>' +
+      '<div class="avatar">' + (s.avatar ? '<img src="' + esc(s.avatar) + '" alt="">' : DEFAV) + '<button class="pen" type="button" data-act="pick-avatar" aria-label="Ganti logo"' + d + '>' + ICON.pen + '</button></div>' +
+      '<h1>' + esc(s.title || 'Vylonium') + VERIFIED + '</h1><p class="handle">' + esc(s.handle || '@vylonium') + '</p><p class="bio">' + esc(s.bio) + '</p>' + SOCIALS + '</header>';
+    h += '<div class="tabs" role="tablist">' + TABS.map(function (t) {
+      return '<button class="tab" role="tab" type="button" data-tab="' + t[0] + '" aria-selected="' + (S.tab === t[0]) + '">' + t[1] + '</button>';
+    }).join('') + '</div>';
+    var note = S.loaded && S.tab !== 'akun' && oldMissing() ? '<div class="note">Data lama dari index belum terdaftar di server, jadi belum bisa diedit di sini.<br><button class="go ghost sm" type="button" data-act="import-old"' + d + '>Daftarkan sekarang</button></div>' : '';
+    if (S.tab === 'links') {
+      h += '<section id="panel-proyek">' + note + '<div class="pills">' + S.links.map(function (it, i) {
+        return '<div class="pill-row"><div class="pill" role="button" tabindex="0" data-act="edit" data-list="links" data-i="' + i + '">' + logoEl(it) + '<span class="pill-t">' + esc(it.title || 'Tanpa judul') + '</span></div><span class="rowpen">' + ICON.pen + '</span></div>';
+      }).join('') + '</div><button class="go ghost sm addb" type="button" data-act="add" data-list="links"' + d + '>' + ICON.plus + ' Tambah link</button></section>';
+    } else if (S.tab === 'portfolio') {
+      h += '<section id="panel-karya">' + note + '<div class="gallery">' + S.portfolio.map(function (it, i) {
+        return '<div class="shot" role="button" tabindex="0" data-act="edit" data-list="portfolio" data-i="' + i + '">' + (it.image ? '<img src="' + esc(it.image) + '" alt="" onerror="this.style.display=\'none\'">' : '') + '<span class="shot-name">' + esc(it.title || 'Tanpa judul') + '</span><span class="shot-cta">Edit ' + ICON.pen + '</span></div>';
+      }).join('') + '</div><button class="go ghost sm addb" type="button" data-act="add" data-list="portfolio"' + d + '>' + ICON.plus + ' Tambah karya</button></section>';
+    } else h += akun();
+    return h;
+  }
+  function page(title, inner) {
+    return '<div class="pg"><div class="pg-h"><button class="ib" type="button" data-act="back" aria-label="Kembali">' + ICON.back + '</button><h2>' + title + '</h2></div>' + inner + '</div>';
+  }
+  function profilePage() {
+    var p = S.pf, d = S.busy ? ' disabled' : '';
+    return page('Edit profil',
+      '<div class="up"><div class="ava">' + (p.avatar ? '<img src="' + esc(p.avatar) + '" alt="">' : DEFAV) + '</div><div class="btns">' +
+      '<button class="go ghost sm" type="button" data-act="up-av">Ganti logo</button>' + (p.avatar ? '<button class="go danger sm" type="button" data-act="clr-av">Hapus logo</button>' : '') + '</div></div>' +
+      field('Nama', 'pf.title') + field('Username', 'pf.handle', { ph: '@vylonium' }) + field('Deskripsi (bio)', 'pf.bio', { rows: 3 }) +
+      field('Tema', 'pf.theme', { select: [['dark', 'Gelap'], ['light', 'Terang']] }) +
+      '<button class="go" type="button" data-act="save-profile"' + d + '>Simpan</button>');
+  }
+  function formPage() {
+    var f = S.form, dr = f.d, L = f.list === 'links', n = S[f.list].length + (f.i == null ? 1 : 0), d = S.busy ? ' disabled' : '', k = L ? 'logo' : 'image', has = !!dr[k];
+    var pos = []; for (var i = 1; i <= n; i++) pos.push([String(i), String(i)]);
+    var up = L
+      ? '<div class="up">' + logoEl(dr) + '<div class="btns"><button class="go ghost sm" type="button" data-act="up">Unggah logo</button>' + (has ? '<button class="go danger sm" type="button" data-act="clr">Hapus logo</button>' : '') + '</div></div>'
+      : '<div class="up-img"><div class="shot">' + (has ? '<img src="' + esc(dr.image) + '" alt="">' : 'Belum ada gambar') + '</div><div class="btns"><button class="go ghost sm" type="button" data-act="up">Unggah gambar</button>' + (has ? '<button class="go danger sm" type="button" data-act="clr">Hapus</button>' : '') + '</div></div>';
+    return page((f.i == null ? 'Tambah ' : 'Edit ') + (L ? 'link' : 'karya'),
+      up + field('Judul', 'form.d.title') + field('Tautan', 'form.d.url', { ph: 'https://' }) +
+      urlField(L ? 'Atau tempel URL logo' : 'Atau tempel URL gambar', 'form.d.' + k) +
+      field('Posisi', 'form.d.pos', { select: pos }) +
+      '<button class="go" type="button" data-act="save-form"' + d + '>' + (f.i == null ? 'Tambahkan' : 'Simpan perubahan') + '</button>' +
+      (f.i == null ? '' : '<button class="go danger sm" type="button" data-act="del-form"' + d + '>Hapus</button>'));
+  }
+  function render() {
+    if (!S.token) S.tab = 'akun';
+    document.body.classList.toggle('login', !S.token);
+    var y = window.scrollY;
+    $('app').innerHTML = !S.token ? login() : S.view === 'form' && S.form ? formPage() : S.view === 'profile' && S.pf ? profilePage() : home();
+    window.scrollTo(0, y);
+  }
+  function nav(v) { S.view = v; try { history.pushState({ v: v }, ''); } catch (e) {} render(); window.scrollTo(0, 0); }
+  function leave() { S.view = 'home'; S.form = null; S.pf = null; try { if (history.state && history.state.v) history.back(); } catch (e) {} }
+  window.addEventListener('popstate', function () { if (S.view !== 'home') { S.view = 'home'; S.form = null; S.pf = null; render(); } });
+  function setBody() { var s = S.pf || S.settings; return { title: s.title, bio: s.bio, handle: s.handle, avatar: s.avatar, theme: s.theme }; }
 
   /* ---------- Events ---------- */
-  var timer;
   $('app').addEventListener('input', function (e) {
-    var el = e.target, p = el.getAttribute('data-path'); if (!p) return;
-    if (el.hasAttribute('data-num')) {
-      var d = digits(el.value); setv(p, d ? Number(d) : 0);
-      var pos = el.selectionStart; el.value = d ? fmt(d) : '';
-    } else setv(p, el.value);
-    clearTimeout(timer); timer = setTimeout(saveDraft, 250); chips();
+    var p = e.target.getAttribute('data-path'); if (p) setv(p, e.target.value);
   });
-  $('tabs').addEventListener('click', function (e) {
-    var b = e.target.closest('[data-tab]'); if (!b) return;
-    S.tab = b.getAttribute('data-tab'); render(); window.scrollTo(0, 0);
+  $('app').addEventListener('change', function (e) {
+    var el = e.target, p = el.getAttribute('data-path');
+    if (el.id === 'remember') S.remember = el.checked;
+    else if (el.tagName === 'SELECT') setv(p, el.value);
+    else if (p && /\.(logo|image)$/.test(p)) render();
   });
-  function arr(list) { return list === 'projects' ? S.idx.projects : list === 'karya' ? S.idx.karya : S.don.amounts; }
-  function download(text, name, type) {
+  $('app').addEventListener('keydown', function (e) {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.getAttribute('role') === 'button') { e.preventDefault(); e.target.click(); }
+  });
+  function download(text, name) {
     var a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([text], { type: type || 'text/html' })); a.download = name;
+    a.href = URL.createObjectURL(new Blob([text], { type: 'application/json' })); a.download = name;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
   }
-  function validate() {
-    var bad = [];
-    if (S.idx) {
-      S.idx.projects.forEach(function (p, i) { if (!p.name.trim() || !p.url.trim()) bad.push('Proyek #' + (i + 1)); });
-      S.idx.karya.forEach(function (k, i) { if (!k.name.trim() || !k.url.trim() || !k.img.trim()) bad.push('Karya #' + (i + 1)); });
-    }
-    return bad;
-  }
+  function clean(a, list) { return a.map(function (it, i) { return Object.assign({ id: it.id }, body(list, it, i)); }); }
+
+
   $('app').addEventListener('click', function (e) {
-    var b = e.target.closest('[data-act]'); if (!b) return;
+    var tb = e.target.closest('[data-tab]');
+    if (tb) { S.tab = tb.getAttribute('data-tab'); render(); return; }
+    var b = e.target.closest('[data-act]'); if (!b || b.disabled) return;
     var act = b.getAttribute('data-act'), list = b.getAttribute('data-list'), i = Number(b.getAttribute('data-i'));
-    if (act === 'up' || act === 'down') {
-      var a = arr(list), j = act === 'up' ? i - 1 : i + 1;
-      if (j < 0 || j >= a.length) return;
-      var t = a[i]; a[i] = a[j]; a[j] = t; saveDraft(); render();
-    } else if (act === 'del') {
-      if (list !== 'amounts' && !confirm('Hapus item ini?')) return;
-      arr(list).splice(i, 1); saveDraft(); render();
-    } else if (act === 'add-project') {
-      S.idx.projects.push({ name: 'Proyek baru', url: 'https://', desc: '', about: '', logo: logoFor('P') }); saveDraft(); render();
-    } else if (act === 'add-karya') {
-      S.idx.karya.push({ name: 'Karya baru', url: 'https://', img: '/img/', alt: '' }); saveDraft(); render();
-    } else if (act === 'add-amount') {
-      var last = S.don.amounts[S.don.amounts.length - 1] || 5000; S.don.amounts.push(last * 2); saveDraft(); render();
-    } else if (act === 'pick-idx') $('f-idx').click();
-    else if (act === 'pick-don') $('f-don').click();
-    else if (act === 'pick-json') $('f-json').click();
-    else if (act === 'dl-idx') {
-      var bad = validate(); if (bad.length && !confirm('Ada isian kosong di: ' + bad.join(', ') + '. Tetap unduh?')) return;
-      S.idx.projects.forEach(function (p) { if (!p.logo.trim()) p.logo = logoFor(p.name); });
-      download(exportIndex(), 'index.html'); toast('index.html diunduh');
-    } else if (act === 'dl-don') { download(exportDon(), 'donasi.html'); toast('donasi.html diunduh'); }
-    else if (act === 'dl-json') { download(JSON.stringify({ idx: S.idx, don: S.don, ext: S.ext }, null, 2), 'vylonium-data.json', 'application/json'); toast('Cadangan diunduh'); }
-    else if (act === 'reset') {
-      if (!confirm('Buang semua perubahan dan kembali ke isi file asli?')) return;
-      try { localStorage.removeItem(KEY); } catch (er) {}
-      if (S.srcIdx) S.idx = parseIndex(S.srcIdx);
-      if (S.srcDon) S.don = parseDon(S.srcDon);
-      baseline = snap(); render(); toast('Draf dibuang');
+
+    if (act === 'import-old') {
+      run(async function () {
+        var have = function (arr, u) { return arr.some(function (x) { return String(x.url || '').replace(/\/+$/, '') === u.replace(/\/+$/, ''); }); };
+        for (var a = 0; a < OLD.links.length; a++) { var l = OLD.links[a]; if (have(S.links, l.url)) continue; await api('POST', '/admin/links', { title: l.title, url: l.url, logo: '', order: S.links.length + 1 }); S.links.push(Object.assign({ id: -1 }, l)); }
+        for (var c = 0; c < OLD.portfolio.length; c++) { var p = OLD.portfolio[c]; if (have(S.portfolio, p.url)) continue; await api('POST', '/admin/portfolio', { title: p.title, image: p.image, url: p.url, order: S.portfolio.length + 1 }); S.portfolio.push(Object.assign({ id: -1 }, p)); }
+        if (!S.settings.title && !S.settings.bio) await api('PUT', '/admin/settings', Object.assign(setBody(), { title: OLD.settings.title, bio: OLD.settings.bio }));
+        await load(false);
+      }, 'Data lama terdaftar');
+    }
+    else if (act === 'eye') {
+      var inp = $('app').querySelector('input[data-path="token"]'); if (!inp) return;
+      var show = inp.type === 'password'; inp.type = show ? 'text' : 'password';
+      b.innerHTML = show ? ICON.eyeoff : ICON.eye;
+    }
+    else if (act === 'login') {
+      S.base = cleanBase(S.base) || DEFAULT_BASE; S.token = String(S.token).trim();
+      if (!S.token) { toast('Isi token dulu'); return; }
+      run(async function () {
+        try { await load(false); }
+        catch (er) { if (er.auth) { S.token = ''; throw new Error('Token salah'); } S.loaded = false; throw er; }
+        store(K_TOKEN, S.token, S.remember); store(K_BASE, S.base, S.remember); S.tab = 'links'; S.view = 'home';
+      }, 'Berhasil masuk');
+    }
+    else if (act === 'logout') { clearToken(); S.tab = 'akun'; S.view = 'home'; render(); toast('Sudah keluar'); }
+    else if (act === 'reload') run(function () { return load(false); }, 'Data dimuat ulang');
+    else if (act === 'edit-profile') { S.pf = Object.assign({}, S.settings); nav('profile'); }
+    else if (act === 'pick-avatar') pick(AVATAR, function (dt) {
+      run(async function () {
+        var old = S.settings.avatar; S.settings.avatar = dt;
+        try { await api('PUT', '/admin/settings', setBody()); } catch (er) { S.settings.avatar = old; throw er; }
+      }, 'Logo diganti');
+    });
+    else if (act === 'up-av') pick(AVATAR, function (dt) { S.pf.avatar = dt; render(); });
+    else if (act === 'clr-av') { S.pf.avatar = ''; render(); }
+    else if (act === 'save-profile') run(async function () {
+      await api('PUT', '/admin/settings', setBody()); S.settings = Object.assign({}, S.pf); leave();
+    }, 'Profil disimpan');
+    else if (act === 'add') { S.form = { list: list, i: null, d: { title: '', url: 'https://', logo: '', image: '', pos: String(S[list].length + 1) } }; nav('form'); }
+    else if (act === 'edit') {
+      var it = S[list][i]; S.form = { list: list, i: i, d: { title: it.title || '', url: it.url || '', logo: it.logo || '', image: it.image || '', pos: String(i + 1) } }; nav('form');
+    }
+    else if (act === 'back') { try { history.back(); } catch (er) { leave(); render(); } }
+    else if (act === 'up') pick(S.form.list === 'links' ? LOGO : IMG, function (dt) { S.form.d[S.form.list === 'links' ? 'logo' : 'image'] = dt; render(); });
+    else if (act === 'clr') { S.form.d[S.form.list === 'links' ? 'logo' : 'image'] = ''; render(); }
+    else if (act === 'save-form') {
+      var f = S.form, dr = f.d;
+      if (!String(dr.title).trim() || !String(dr.url).trim()) { toast('Judul dan tautan wajib diisi'); return; }
+      run(async function () {
+        var ls = f.list, arr = S[ls].slice(), max = arr.length + (f.i == null ? 1 : 0);
+        var pos = Math.max(1, Math.min(max, Number(dr.pos) || max)) - 1;
+        var item = Object.assign({}, f.i == null ? {} : arr[f.i], { title: dr.title.trim(), url: dr.url.trim(), logo: dr.logo || '', image: dr.image || '' });
+        if (f.i != null) arr.splice(f.i, 1);
+        arr.splice(pos, 0, item);
+        if (item.id != null) await api('PUT', '/admin/' + ls + '/' + encodeURIComponent(item.id), body(ls, item, pos));
+        else await api('POST', '/admin/' + ls, body(ls, item, pos));
+        for (var k = 0; k < arr.length; k++) {
+          var x = arr[k]; if (x === item || x.id == null || Number(x.order) === k + 1) continue;
+          await api('PUT', '/admin/' + ls + '/' + encodeURIComponent(x.id), body(ls, x, k));
+        }
+        await load(false); leave();
+      }, 'Tersimpan');
+    }
+    else if (act === 'del-form') {
+      var g = S.form, di = S[g.list][g.i];
+      if (!di || !confirm('Hapus item ini?')) return;
+      run(async function () { await api('DELETE', '/admin/' + g.list + '/' + encodeURIComponent(di.id)); await load(false); leave(); }, 'Dihapus');
+    }
+    else if (act === 'push-all') {
+      if (!confirm('Timpa semua konten di server dengan isi panel ini?')) return;
+      run(async function () {
+        await api('PUT', '/admin/content', { settings: S.settings, links: clean(S.links, 'links'), portfolio: clean(S.portfolio, 'portfolio') });
+        await load(false);
+      }, 'Semua konten dikirim');
+    }
+    else if (act === 'dl-json') {
+      download(JSON.stringify({ settings: S.settings, links: S.links, portfolio: S.portfolio, donations: S.donations }, null, 2), 'vylonium-content.json');
+      toast('Cadangan diunduh');
     }
   });
 
-  boot();
+  /* ---------- Boot ---------- */
+  S.base = fetchStored(K_BASE) || DEFAULT_BASE;
+  S.token = fetchStored(K_TOKEN);
+  try { S.remember = !!localStorage.getItem(K_TOKEN) || !sessionStorage.getItem(K_TOKEN); } catch (e) {}
+  render();
+  if (S.token) run(function () { return load(false); });
 })();
 </script>
 </body>
