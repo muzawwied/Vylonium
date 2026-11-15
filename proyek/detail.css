@@ -1,0 +1,35 @@
+:root{--bg:#fff;--fg:#111;--mut:#71717a;--line:#e6e6ea;--card:#f7f7f8;--acc:#6366f1;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0e0e10;--fg:#f2f2f4;--mut:#8d8d96;--line:#2c2c33;--card:#1b1b20;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 "Inter",-apple-system,BlinkMacSystemFont,system-ui,sans-serif}
+a{color:var(--acc);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:760px;margin:0 auto;padding:28px 20px 64px}
+.crumb{font-size:13px;color:var(--mut);margin-bottom:18px}
+.crumb a{color:var(--mut)}
+h1{font:700 clamp(26px,5vw,36px)/1.25 "Montserrat",system-ui,sans-serif;margin:0 0 12px;letter-spacing:-.02em}
+h2{font:700 20px/1.35 "Montserrat",system-ui,sans-serif;margin:36px 0 10px}
+h3{font:600 16px/1.4 "Montserrat",system-ui,sans-serif;margin:22px 0 6px}
+p{margin:0 0 14px}
+.lead{font-size:17px;color:var(--mut);margin-bottom:22px}
+.hero{border-radius:18px;overflow:hidden;border:1px solid var(--line);margin:0 0 22px;background:var(--card)}
+.hero img{display:block;width:100%;height:auto}
+.cta{display:inline-flex;align-items:center;gap:8px;background:var(--fg);color:var(--bg);padding:12px 20px;border-radius:999px;font-weight:600;font-size:15px;margin:6px 0 8px}
+.cta:hover{text-decoration:none;opacity:.9}
+.meta{font-size:13px;color:var(--mut);margin:0 0 26px}
+ul.clean{list-style:none;padding:0;margin:0 0 8px}
+ul.clean li{position:relative;padding-left:22px;margin-bottom:8px}
+ul.clean li:before{content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;border-radius:50%;background:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:14px 0}
+.faq{margin:8px 0 0}
+.faq details{border-bottom:1px solid var(--line);padding:12px 0}
+.faq summary{cursor:pointer;font-weight:600}
+.faq p{margin:8px 0 0;color:var(--mut)}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+.tags span{font-size:12px;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));margin-top:12px}
+.rel{display:block;border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--card)}
+.rel b{display:block;color:var(--fg);margin-bottom:2px}
+.rel small{color:var(--mut)}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--mut)}
+footer a{color:var(--mut)}
