@@ -2,6 +2,8 @@
 @media (prefers-color-scheme:dark){:root{--bg:#0e0e10;--fg:#f2f2f4;--mut:#8d8d96;--line:#2c2c33;--card:#1b1b20;color-scheme:dark}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 "Inter",-apple-system,BlinkMacSystemFont,system-ui,sans-serif}
+.wrap{max-width:800px}
+p,.lead{text-align:left;text-wrap:pretty}
 a{color:var(--acc);text-decoration:none}
 a:hover{text-decoration:underline}
 .wrap{max-width:760px;margin:0 auto;padding:28px 20px 64px}
@@ -25,11 +27,23 @@ ul.clean li:before{content:"";position:absolute;left:0;top:.62em;width:8px;heigh
 .faq details{border-bottom:1px solid var(--line);padding:12px 0}
 .faq summary{cursor:pointer;font-weight:600}
 .faq p{margin:8px 0 0;color:var(--mut)}
-.tags{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
-.tags span{font-size:12px;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
 .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));margin-top:12px}
 .rel{display:block;border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--card)}
 .rel b{display:block;color:var(--fg);margin-bottom:2px}
 .rel small{color:var(--mut)}
 footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--mut)}
 footer a{color:var(--mut)}
+/* Desktop: teks rata kanan-kiri biar tepi kiri-kanan rapi. Mobile tetap rata kiri. */
+@media (min-width:880px){
+  .wrap{padding:44px 24px 80px;max-width:820px}
+  p,.lead,.faq p{text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-wrap:pretty}
+  ul.clean li,ol.steps li,.crumb,.meta,footer{text-align:left}
+  h1{font-size:40px}
+  h2{margin-top:44px}
+  .hero{margin-bottom:26px;box-shadow:0 18px 44px rgba(17,17,24,.10)}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+  .card{padding:20px 22px}
+}
+@media (max-width:879px){
+  p,.lead{text-align:left}
+}
