@@ -31,8 +31,17 @@ ul.clean li:before{content:"";position:absolute;left:0;top:.62em;width:8px;heigh
 .rel{display:block;border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--card)}
 .rel b{display:block;color:var(--fg);margin-bottom:2px}
 .rel small{color:var(--mut)}
-footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--mut)}
-footer a{color:var(--mut)}
+.site-foot{margin-top:56px;padding-top:24px;border-top:1px solid var(--line);font-size:13px;color:var(--mut)}
+.site-foot .foot-top{display:flex;flex-wrap:wrap;gap:28px;justify-content:space-between;align-items:flex-start}
+.site-foot .foot-brand{max-width:300px}
+.site-foot .foot-brand b{display:block;font:700 15px "Montserrat",system-ui,sans-serif;color:var(--fg);margin-bottom:6px}
+.site-foot .foot-brand p{margin:0;text-align:left;line-height:1.6}
+.site-foot .foot-nav{display:flex;flex-wrap:wrap;gap:36px}
+.site-foot .foot-nav>div{display:flex;flex-direction:column;gap:7px;min-width:120px}
+.site-foot .foot-h{font-weight:600;color:var(--fg);font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+.site-foot a{color:var(--mut);text-decoration:none}
+.site-foot a:hover{color:var(--fg);text-decoration:underline}
+.site-foot .foot-bottom{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;margin-top:26px;padding-top:16px;border-top:1px solid var(--line);font-size:12px}
 /* Desktop: teks rata kanan-kiri biar tepi kiri-kanan rapi. Mobile tetap rata kiri. */
 @media (min-width:880px){
   .wrap{padding:44px 24px 80px;max-width:820px}
@@ -46,4 +55,10 @@ footer a{color:var(--mut)}
 }
 @media (max-width:879px){
   p,.lead{text-align:left}
+}
+
+@media (max-width:720px){
+  .site-foot .foot-top{flex-direction:column;gap:22px}
+  .site-foot .foot-nav{gap:26px}
+  .site-foot .foot-bottom{flex-direction:column;gap:6px}
 }
