@@ -513,7 +513,7 @@ body.sheet-lock { overflow: hidden; }
   <div class="pills">
     <div class="pill-row">
     <a class="pill" href="https://cllara.vylonium.biz.id/" target="_blank" rel="noopener" style="min-height:56px;padding:8px 10px">
-      <span class="logo" style="width:44px;height:44px;margin:0 4px"><img src="/img/cllara-logo.webp" alt="Cllara" width="44" height="44" style="width:100%;height:100%;object-fit:contain;display:block;border-radius:12px"></span>
+      <span class="logo" style="width:44px;height:44px;margin:0 4px"><img id="cllara-logo" src="/img/cllara-logo.webp" alt="Cllara" width="44" height="44" data-fallback="/img/cllara-logo.webp" style="width:100%;height:100%;object-fit:contain;display:block;border-radius:12px"></span>
       <span class="pill-t" style="text-transform:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:0;font-size:16px">Template Desain</span>
     </a>
     </div>
@@ -873,6 +873,34 @@ body.sheet-lock { overflow: hidden; }
   box.addEventListener('pointerout', function (e) {
     var p = e.target.closest('.pill');
     if (p && !p.contains(e.relatedTarget)) { p.style.removeProperty('--rx'); p.style.removeProperty('--ry'); }
+  });
+})();
+</script>
+
+<script>
+/* Logo pill Cllara dirender otomatis dari favicon situsnya.
+   Kalau situs tidak bisa dibaca, pakai berkas lokal sebagai cadangan. */
+(function () {
+  var img = document.getElementById('cllara-logo');
+  if (!img) return;
+  var situs = 'https://cllara.vylonium.biz.id/';
+  var cadangan = img.getAttribute('data-fallback') || img.getAttribute('src');
+  var beres = false;
+  function pakai(u) { if (beres) return; beres = true; img.src = u; }
+  var jeda = setTimeout(function () { if (!beres) img.src = cadangan; }, 4000);
+  fetch(situs, { mode: 'cors', cache: 'no-cache' }).then(function (r) {
+    if (!r.ok) throw new Error('status ' + r.status);
+    return r.text();
+  }).then(function (t) {
+    var d = new DOMParser().parseFromString(t, 'text/html');
+    var l = d.querySelector('link[rel~="icon"], link[rel="apple-touch-icon"]');
+    var u = l && l.getAttribute('href');
+    if (!u) throw new Error('favicon tidak ditemukan');
+    clearTimeout(jeda);
+    pakai(new URL(u, situs).href);
+  }).catch(function () {
+    clearTimeout(jeda);
+    img.src = cadangan;
   });
 })();
 </script>
